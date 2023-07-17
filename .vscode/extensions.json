@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+      "EditorConfig.EditorConfig",
+      "dbaeumer.vscode-eslint",
+      "nhoizey.gremlins",
+      "yoavbls.pretty-ts-errors",
+      "meganrogge.template-string-converter"
+  ]
+}
