@@ -1,9 +1,6 @@
 // @ts-check
 
+import config from './config/jest.config.js';
+
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-export default {
-  passWithNoTests: true,
-  preset: 'ts-jest/presets/js-with-ts-esm',
-  roots: ['src'],
-  testEnvironment: 'node',
-};
+export default config;

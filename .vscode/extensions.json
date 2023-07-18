@@ -1,9 +1,10 @@
 {
   "recommendations": [
-      "EditorConfig.EditorConfig",
-      "dbaeumer.vscode-eslint",
-      "nhoizey.gremlins",
-      "yoavbls.pretty-ts-errors",
-      "meganrogge.template-string-converter"
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "meganrogge.template-string-converter",
+    "ms-vscode.makefile-tools",
+    "nhoizey.gremlins",
+    "yoavbls.pretty-ts-errors"
   ]
 }
