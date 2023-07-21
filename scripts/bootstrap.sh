@@ -160,11 +160,23 @@ EOF
 
 make_config tsconfig.json "$(cat << EOF
 {
-	"compilerOptions": {
-		"outDir": "dist",
-	},
-	"extends": "./node_modules/$BOILERPLATE_BASE/config/tsconfig.base.json",
-	"include": ["src/*"]
+  "compilerOptions": {
+    "outDir": "dist",
+  },
+  "extends": "./node_modules/$BOILERPLATE_BASE/config/tsconfig.base.json",
+  "include": ["src/*"]
+}
+EOF
+)"
+
+make_config tsconfig.build.json "$(cat << EOF
+{
+  "compilerOptions": {
+    "noEmit": false
+  },
+  "exclude": ["**/*.test.ts"],
+  "extends": "./tsconfig.json",
+  "include": ["src/*"]
 }
 EOF
 )"
@@ -190,12 +202,14 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"devDependencies.@commitlint/cli=latest" \
 		"devDependencies.@commitlint/config-conventional=latest" \
 		"devDependencies.@commitlint/types=latest" \
+		"devDependencies.@jest/globals=latest" \
 		"devDependencies.@types/eslint=latest" \
 		"devDependencies.@typescript-eslint/eslint-plugin=latest" \
 		"devDependencies.@typescript-eslint/parser=latest" \
 		"devDependencies.@typescript-eslint/types=latest" \
 		"devDependencies.chokidar-cli=latest" \
 		"devDependencies.eslint=latest" \
+		"devDependencies.eslint-import-resolver-typescript=latest" \
 		"devDependencies.eslint-plugin-import=latest" \
 		"devDependencies.eslint-plugin-json=latest" \
 		"devDependencies.eslint-plugin-prettier=latest" \

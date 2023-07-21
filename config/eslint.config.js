@@ -208,7 +208,16 @@ export const rules = {
   'handle-callback-err': 'error',
   'id-blacklist': 'error',
   'id-match': 'error',
-  'import/extensions': ['error', 'always'],
+  'import/extensions': [
+    'error',
+    'always',
+    {
+      cjs: 'never',
+      js: 'always',
+      mjs: 'never',
+      ts: 'never',
+    },
+  ],
   'import/no-commonjs': 'error',
   'import/no-duplicates': 'warn',
   'import/no-named-as-default': 'warn',
@@ -474,6 +483,9 @@ export const config = {
   settings: {
     'import/resolver': {
       typescript: {
+        extensionAlias: {
+          '.js': ['.ts', '.tsx', '.d.ts', '.js'],
+        },
         project: 'tsconfig.json',
       },
     },

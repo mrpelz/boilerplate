@@ -18,14 +18,13 @@ check_test:
 	jest .
 
 check_typescript:
-	tsc --noEmit
+	tsc
 
-hook_prepack: check_commit check_config transform_clear transform_package-json-sort transform_lint transform_typescript check_test
+hook_prepack: check_commit check_config transform_clear check_test
 
 transform: transform_package-json-sort transform_lint transform_typescript
 
-transform_clear:
-	rm -rf dist/{*,.*}
+transform_clear: util_clear transform
 
 transform_lint:
 	eslint --fix .
@@ -34,7 +33,10 @@ transform_package-json-sort:
 	sort-package-json
 
 transform_typescript:
-	tsc
+	tsc --project tsconfig.build.json
+
+util_clear:
+	rm -rf dist/{*,.*}
 
 util_install-git-hooks:
 	husky install
@@ -52,4 +54,4 @@ watch_test:
 	jest --watch .
 
 watch_typescript:
-	tsc --watch
+	tsc --project tsconfig.build.json --watch
