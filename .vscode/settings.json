@@ -1,12 +1,1 @@
-{
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "editor.formatOnSave": false,
-  "eslint.experimental.useFlatConfig": true,
-  "eslint.format.enable": true,
-  "files.autoSave": "onWindowChange",
-  "javascript.format.enable": false,
-  "prettier.enable": false,
-  "typescript.format.enable": false,
-}
+/home/mrpelz/work/misc/boilerplate/config/.vscode/settings.json

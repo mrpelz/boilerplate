@@ -1,5 +1,6 @@
 // @ts-check
 
+// @ts-ignore
 import config from './config/jest.config.js';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */

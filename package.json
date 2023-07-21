@@ -9,13 +9,13 @@
     "boilerplate-bootstrap": "scripts/bootstrap.sh"
   },
   "files": [
+    "dist/**/{*,.*}",
     ".editorconfig",
     ".gitignore",
-    ".husky/commit-msg",
-    ".vscode/{*,.*}",
-    "config/{*,.*}",
-    "dist/{*,.*}",
-    "scripts/{*,.*}"
+    ".husky/**/commit-msg",
+    ".vscode/**/{*,.*}",
+    "config/**/{*,.*}",
+    "scripts/**/{*,.*}"
   ],
   "scripts": {
     "prepack": "make hook_prepack"
