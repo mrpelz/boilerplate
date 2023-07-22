@@ -5,42 +5,42 @@ cache:
     - node_modules/
 
 stages:
-  - Preparation
-  - Checking
-  - Transforming
-  - Publishing
+  - preparation
+  - checking
+  - transforming
+  - publishing
 
-Install NPM-Dependencies:
+install dependencies:
   script:
     - npm install
-  stage: Preparation
+  stage: preparation
 
-Latest Commit Message:
+latest commit message:
   script:
     - make check_commit
-  stage: Checking
+  stage: checking
 
-package.json Sort:
+package.json sort:
   script:
     - make check_package-json-sort
-  stage: Checking
+  stage: checking
 
-Lint:
+lint:
   script:
     - make check_lint
-  stage: Checking
+  stage: checking
 
-Config:
+config:
   script:
     - make check_config
-  stage: Checking
+  stage: checking
 
-TypeScript:
+typescript:
   script:
     - make check_typescript
-  stage: Checking
+  stage: checking
 
-Test:
+test:
   script:
     - make check_test
-  stage: Checking
+  stage: checking
