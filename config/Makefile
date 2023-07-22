@@ -42,13 +42,16 @@ util_install-git-hooks:
 	husky install
 
 watch:
-	tmux new-session "make watch_lint" \; \split-window -h "make watch_test" \; \split-window -v "make watch_typescript" \; \select-pane -t 0 \; \split-window -v "make watch_config" \; set status off
+	scripts/watch.sh
 
 watch_config:
 	tsc --project tsconfig.meta.json --watch
 
+watch_dev:
+	scripts/dev.sh
+
 watch_lint:
-	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/*" --ignore "node_modules/*" --ignore "*.d.ts" --command "clear; eslint ."
+	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/*" --ignore "node_modules/*" --ignore "*.d.ts" --command "clear; eslint .; echo \"[waiting for changes…]\""
 
 watch_test:
 	jest --watch .

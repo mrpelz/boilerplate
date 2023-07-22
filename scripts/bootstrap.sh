@@ -152,6 +152,9 @@ if check_response "🖇 install symbolic links referencing files in boilerplate?
 
 	make_ln "${BOILERPLATE_MODULE_PATH}config/.vscode/extensions.json" .vscode/extensions.json
 	make_ln "${BOILERPLATE_MODULE_PATH}config/.vscode/settings.json" .vscode/settings.json
+
+	make_ln "${BOILERPLATE_MODULE_PATH}config/watch.sh" scripts/watch.sh
+	make_ln "${BOILERPLATE_MODULE_PATH}config/dev.sh" scripts/dev.sh
 fi
 
 if check_response "📃 install bare config files extending base files in boilerplate?" y; then
