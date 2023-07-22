@@ -1,0 +1,46 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - Preparation
+  - Checking
+  - Transforming
+  - Publishing
+
+Install NPM-Dependencies:
+  script:
+    - npm install
+  stage: Preparation
+
+Latest Commit Message:
+  script:
+    - make check_commit
+  stage: Checking
+
+package.json Sort:
+  script:
+    - make check_package-json-sort
+  stage: Checking
+
+Lint:
+  script:
+    - make check_lint
+  stage: Checking
+
+Config:
+  script:
+    - make check_config
+  stage: Checking
+
+TypeScript:
+  script:
+    - make check_typescript
+  stage: Checking
+
+Test:
+  script:
+    - make check_test
+  stage: Checking
