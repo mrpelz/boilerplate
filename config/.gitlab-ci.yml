@@ -1,0 +1,61 @@
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+    - dist/
+
+stages:
+  - prepare
+  - check
+  - deploy
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        compare_to: 'refs/heads/main'
+        paths:
+          - '*'
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+install dependencies:
+  script:
+    - npm install
+  stage: prepare
+
+latest commit message:
+  needs: ["install dependencies"]
+  script:
+    - make check_commit
+  stage: check
+
+package.json:
+  needs: ["install dependencies"]
+  script:
+    - make check_package_json
+  stage: check
+
+lint:
+  needs: ["install dependencies"]
+  script:
+    - make check_lint
+  stage: check
+
+config:
+  needs: ["install dependencies"]
+  script:
+    - make check_config
+  stage: check
+
+typescript:
+  needs: ["install dependencies"]
+  script:
+    - make check_typescript
+  stage: check
+
+test:
+  needs: ["install dependencies"]
+  script:
+    - make check_test
+  stage: check

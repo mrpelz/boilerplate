@@ -1,6 +1,17 @@
+.SILENT:
+
 export PATH := node_modules/.bin:$(PATH)
 
-check: check_commit check_package-json-sort check_lint check_config check_typescript check_test
+PKG_NAME = $(shell npm pkg get name --workspaces=false | sed -nr 's/^"@(.+)"$$/\1/p')
+GIT_NAME = $(shell git remote get-url origin | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
+
+PKG_VERSION = $(shell npm pkg get version --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
+GIT_VERSION = $(shell git describe --tags $$(git rev-list --tags --max-count=1) | sed -nr 's/^v(.+)$$/\1/p')
+
+PKG_REPO_TYPE = $(shell npm pkg get repository.type --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
+PKG_REPO_NAME = $(shell npm pkg get repository.url --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p' | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
+
+check: check_commit check_package_json check_lint check_config check_typescript check_test
 
 check_commit:
 	commitlint --verbose --from HEAD~1 --to HEAD
@@ -11,8 +22,15 @@ check_config:
 check_lint:
 	eslint .
 
-check_package-json-sort:
+check_package_json:
 	sort-package-json --check
+
+	if [ "$(PKG_NAME)" = "$(GIT_NAME)" ]; then exit 0; else echo "name in package.json ($(PKG_NAME)) does not match git repository name ($(GIT_NAME))"; exit 1; fi
+
+	if [ "$(PKG_VERSION)" = "$(GIT_VERSION)" ]; then exit 0; else echo "version in package.json ($(PKG_VERSION)) does not match git repository version ($(GIT_VERSION))"; exit 1; fi
+
+	if [ "$(PKG_REPO_TYPE)" = "git" ]; then exit 0; else echo "repository.type in package.json ($(PKG_REPO_TYPE)) does not match \"git\""; exit 1; fi
+	if [ "$(PKG_REPO_NAME)" = "$(GIT_NAME)" ]; then exit 0; else echo "package name derived from repository.url in package.json ($(PKG_REPO_NAME)) does not match git repository name ($(GIT_NAME))"; exit 1; fi
 
 check_test:
 	jest .
@@ -20,17 +38,21 @@ check_test:
 check_typescript:
 	tsc
 
-hook_prepack: check_commit check_config transform_clear check_test
+hook_prepack: check_commit check_config check_test transform_clear
 
-transform: transform_package-json-sort transform_lint transform_typescript
+transform: transform_package_json transform_lint transform_typescript
 
 transform_clear: util_clear transform
 
 transform_lint:
 	eslint --fix .
 
-transform_package-json-sort:
+transform_package_json:
 	sort-package-json
+
+	npm pkg set "name=@$(GIT_NAME)"
+	npm pkg set "version=$(GIT_VERSION)"
+	npm pkg set "repository.type=git"
 
 transform_typescript:
 	tsc --project tsconfig.build.json

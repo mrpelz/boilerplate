@@ -2,7 +2,6 @@
 
 tmux \
 	new-session "make watch_lint" \; \
-	bind-key -n C-c kill-session \; \
 	bind-key -n C-d kill-session \; \
 	bind-key -n C-Down "select-pane -D" \; \
 	bind-key -n C-Left "select-pane -L" \; \
@@ -26,5 +25,5 @@ tmux \
 	set-option -p pane-border-format "input" \; \
 	split-window -f -v -l 1 "echo -n \"…\"" \; \
 	set-option -p pane-border-format "" \; \
-	set-option -p remain-on-exit-format "press [Ctrl+C] or [Ctrl+D] to exit, [Ctrl+<arrow>] to select panes, [Ctrl+Space] to toggle pane fullscreen" \; \
+	set-option -p remain-on-exit-format "press [Ctrl+D] to exit, [Ctrl+<arrow>] to select panes, [Ctrl+Space] to toggle pane fullscreen" \; \
 	select-pane -t 4 \; \

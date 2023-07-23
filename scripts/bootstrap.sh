@@ -236,6 +236,18 @@ make_config tsconfig.meta.json "$(cat << EOF
 }
 EOF
 )"
+
+# purposefully not indented
+make_config .gitlab-ci.yml "$(if [ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]; then cat << EOF
+include:
+  - project: 'mrpelz/boilerplate'
+		ref: main
+		file: '/config/.gitlab-ci.yml'
+EOF
+else cat << EOF
+include: '/config/.gitlab-ci.yml'
+EOF
+fi)"
 fi
 
 if check_response "💱 apply changes to \"package.json\"?" y; then
