@@ -21,12 +21,15 @@ remove prereleases:
     - git fetch gitlab_origin "$CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME" --tags
     - git switch "$CI_COMMIT_REF_NAME"
     - |
-      MERGED_PREID=$(npm pkg get version --workspaces=false | sed -nr 's/^"[0-9]+\.[0-9]+\.[0-9]+-(.+)\.[0-9]+"$/\1/p')
-      TAGS=$(git tag | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-$MERGED_PREID\.[0-9]+$/\0/p')
+      TAGS=$(git tag --merged | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-.+\.[0-9]+$/\0/p')
 
       for TAG in $TAGS; do
+        git tag --delete "$TAG"
         curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG"
       done
+
+    - make transform_package_json
+    - git push gitlab_origin
 
 install dependencies:
   stage: prepare
