@@ -6,7 +6,7 @@ PKG_NAME = $(shell npm pkg get name --workspaces=false | sed -nr 's/^"@(.+)"$$/\
 GIT_NAME = $(shell git remote get-url origin | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
 
 PKG_VERSION = $(shell npm pkg get version --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
-GIT_VERSION = $(shell git describe --tags $$(git rev-list --tags --max-count=1) | sed -nr 's/^v(.+)$$/\1/p')
+GIT_VERSION = $(shell git describe --tag --abbrev=0 | sed -nr 's/^v(.+)$$/\1/p')
 
 PKG_REPO_TYPE = $(shell npm pkg get repository.type --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
 PKG_REPO_NAME = $(shell npm pkg get repository.url --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p' | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
@@ -48,11 +48,11 @@ transform_lint:
 	eslint --fix .
 
 transform_package_json:
-	sort-package-json
-
 	npm pkg set "name=@$(GIT_NAME)"
 	npm pkg set "version=$(GIT_VERSION)"
 	npm pkg set "repository.type=git"
+
+	sort-package-json
 
 transform_typescript:
 	tsc --project tsconfig.build.json

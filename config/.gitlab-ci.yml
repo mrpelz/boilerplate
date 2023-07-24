@@ -10,52 +10,148 @@ stages:
   - check
   - deploy
 
-workflow:
+remove prereleases:
+  stage: prepare
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      changes:
-        compare_to: 'refs/heads/main'
-        paths:
-          - '*'
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - git config user.email "$CI_BOT_EMAIL"
+    - git config user.name "$CI_BOT_NAME"
+    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git fetch gitlab_origin "$CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME" --tags
+    - git switch "$CI_COMMIT_REF_NAME"
+    - |
+      MERGED_PREID=$(npm pkg get version --workspaces=false | sed -nr 's/^"[0-9]+\.[0-9]+\.[0-9]+-(.+)\.[0-9]+"$/\1/p')
+      TAGS=$(git tag | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-$MERGED_PREID\.[0-9]+$/\0/p')
+
+      for TAG in $TAGS; do
+        curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG"
+      done
 
 install dependencies:
+  stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - npm install
-  stage: prepare
 
 latest commit message:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_commit
-  stage: check
 
 package.json:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_package_json
-  stage: check
 
 lint:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_lint
-  stage: check
 
 config:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_config
-  stage: check
 
 typescript:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_typescript
-  stage: check
 
 test:
-  needs: ["install dependencies"]
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make check_test
-  stage: check
+
+prerelease:
+  stage: deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  allow_failure: true
+  script:
+    - git config user.email "$CI_BOT_EMAIL"
+    - git config user.name "$CI_BOT_NAME"
+    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git fetch gitlab_origin "$CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME" --tags
+    - git switch "$CI_COMMIT_REF_NAME"
+    - |
+      TAGS=$(git tag --no-merged | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-$CI_COMMIT_REF_NAME\.[0-9]+$/\0/p')
+
+      for TAG in $TAGS; do
+        git tag --delete "$TAG"
+        curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG"
+      done
+
+    - npm version prerelease --preid "$CI_COMMIT_REF_SLUG"
+    - git push gitlab_origin --tags
+    - git push gitlab_origin --push-option=ci.skip
+
+patch release:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: true
+  script:
+    - git config user.email "$CI_BOT_EMAIL"
+    - git config user.name "$CI_BOT_NAME"
+    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git push gitlab_origin --tags
+    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+
+minor release:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: true
+  script:
+    - git config user.email "$CI_BOT_EMAIL"
+    - git config user.name "$CI_BOT_NAME"
+    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - npm version minor
+    - git push gitlab_origin --tags
+    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+
+major release:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: true
+  script:
+    - git config user.email "$CI_BOT_EMAIL"
+    - git config user.name "$CI_BOT_NAME"
+    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - npm version major
+    - git push gitlab_origin --tags
+    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+
+publish:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "<Do actual publishing to registry here>"
