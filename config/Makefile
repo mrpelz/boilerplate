@@ -20,7 +20,7 @@ check_config:
 	tsc --project tsconfig.meta.json
 
 check_lint:
-	eslint .
+	eslint . --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*"
 
 check_package_json:
 	sort-package-json --check
@@ -73,7 +73,7 @@ watch_dev:
 	scripts/dev.sh
 
 watch_lint:
-	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/*" --ignore "node_modules/*" --ignore "*.d.ts" --command "clear; eslint .; echo \"[waiting for changes…]\""
+	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/*" --ignore "node_modules/*" --ignore "*.d.ts" --command "clear; eslint . --ignore-pattern \"dist/**/*\" --ignore-pattern \"node_modules/**/*\"; echo \"[waiting for changes…]\""
 
 watch_test:
 	jest --watch .
