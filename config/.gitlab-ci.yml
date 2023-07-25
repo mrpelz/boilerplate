@@ -15,6 +15,7 @@ install dependencies:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
   script:
     - npm install
 
@@ -71,14 +72,14 @@ prerelease:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
   allow_failure: true
   script:
-    - git config user.email "$CI_BOT_EMAIL"
-    - git config user.name "$CI_BOT_NAME"
-    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
-    - |
-      TAG=$(npm version prerelease --preid "$CI_COMMIT_REF_SLUG")
-      curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG" >/dev/null
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - npm version prerelease --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git push gitlab_origin --tags
 
 patch release:
@@ -88,11 +89,11 @@ patch release:
       when: manual
   allow_failure: true
   script:
-    - git config user.email "$CI_BOT_EMAIL"
-    - git config user.name "$CI_BOT_NAME"
-    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
     - npm version patch
-    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
 minor release:
@@ -102,11 +103,11 @@ minor release:
       when: manual
   allow_failure: true
   script:
-    - git config user.email "$CI_BOT_EMAIL"
-    - git config user.name "$CI_BOT_NAME"
-    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
     - npm version minor
-    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
 major release:
@@ -116,11 +117,11 @@ major release:
       when: manual
   allow_failure: true
   script:
-    - git config user.email "$CI_BOT_EMAIL"
-    - git config user.name "$CI_BOT_NAME"
-    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - git config user.email "$[CI_BOT_EMAIL]"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
     - npm version major
-    - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
 publish:
@@ -128,4 +129,5 @@ publish:
   rules:
     - if: $CI_COMMIT_TAG
   script:
-    - echo "<Do actual publishing to registry here>"
+    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    - npm publish

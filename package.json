@@ -13,7 +13,7 @@
     "boilerplate-bootstrap": "scripts/bootstrap.sh"
   },
   "files": [
-    "dist/**/{*,.*}",
+    "dist/**/*.{js,js.map}",
     "config/**/{*,.*}",
     "scripts/bootstrap.sh"
   ],

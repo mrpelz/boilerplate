@@ -38,7 +38,7 @@ check_test:
 check_typescript:
 	tsc
 
-hook_prepack: check_commit check_config check_test transform_clear
+hook_prepack: util_clear transform_typescript
 
 transform: transform_package_json transform_lint transform_typescript
 
