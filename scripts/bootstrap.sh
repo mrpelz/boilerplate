@@ -211,7 +211,7 @@ make_config tsconfig.json "$(cat << EOF
     "outDir": "dist",
   },
   "extends": "${BOILERPLATE_MODULE_PATH_LEADING_DOT}config/tsconfig.base.json",
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
 EOF
 )"
@@ -223,14 +223,14 @@ make_config tsconfig.build.json "$(cat << EOF
   },
   "exclude": ["**/*.test.ts"],
   "extends": "./tsconfig.json",
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
 EOF
 )"
 
 make_config tsconfig.meta.json "$(cat << EOF
 {
-  "exclude": ["dist/*", "node_modules/*", "src/*"],
+  "exclude": ["dist/**/*", "node_modules/**/*", "src/**/*"],
   "extends": "${BOILERPLATE_MODULE_PATH_LEADING_DOT}config/tsconfig.meta.json",
   "include": ["**/*.js"]
 }
@@ -241,8 +241,8 @@ EOF
 make_config .gitlab-ci.yml "$(if [ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]; then cat << EOF
 include:
   - project: 'mrpelz/boilerplate'
-		ref: main
-		file: '/config/.gitlab-ci.yml'
+    ref: main
+    file: '/config/.gitlab-ci.yml'
 EOF
 else cat << EOF
 include: '/config/.gitlab-ci.yml'

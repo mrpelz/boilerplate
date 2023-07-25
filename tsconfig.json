@@ -3,5 +3,5 @@
     "outDir": "dist",
   },
   "extends": "./config/tsconfig.base.json",
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }
