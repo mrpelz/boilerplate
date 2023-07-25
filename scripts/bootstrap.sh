@@ -269,7 +269,6 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"devDependencies.eslint=latest" \
 		"devDependencies.eslint-import-resolver-typescript=latest" \
 		"devDependencies.eslint-plugin-import=latest" \
-		"devDependencies.eslint-plugin-json=latest" \
 		"devDependencies.eslint-plugin-prettier=latest" \
 		"devDependencies.eslint-plugin-simple-import-sort=latest" \
 		"devDependencies.husky=latest" \
