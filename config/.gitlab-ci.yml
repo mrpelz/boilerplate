@@ -117,7 +117,7 @@ major release:
       when: manual
   allow_failure: true
   script:
-    - git config user.email "$[CI_BOT_EMAIL]"
+    - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
     - npm version major
