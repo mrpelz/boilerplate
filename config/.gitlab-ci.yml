@@ -8,9 +8,10 @@ cache:
 stages:
   - prepare
   - check
-  - deploy
+  - transform
+  - release
 
-install dependencies:
+npm install:
   stage: prepare
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -19,7 +20,7 @@ install dependencies:
   script:
     - npm install
 
-latest commit message:
+check_commit:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -27,7 +28,7 @@ latest commit message:
   script:
     - make check_commit
 
-package.json:
+check_package_json:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -35,7 +36,7 @@ package.json:
   script:
     - make check_package_json
 
-lint:
+check_lint:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -43,7 +44,7 @@ lint:
   script:
     - make check_lint
 
-config:
+check_config:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -51,7 +52,7 @@ config:
   script:
     - make check_config
 
-typescript:
+check_typescript:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -59,7 +60,7 @@ typescript:
   script:
     - make check_typescript
 
-test:
+check_test:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
@@ -67,8 +68,15 @@ test:
   script:
     - make check_test
 
-prerelease:
-  stage: deploy
+transform_typescript_clear:
+  stage: transform
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - make transform_typescript_clear
+
+tag:prerelease:
+  stage: release
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -82,8 +90,8 @@ prerelease:
     - npm version prerelease --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git push gitlab_origin --tags
 
-patch release:
-  stage: deploy
+tag:patch:
+  stage: release
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
@@ -96,8 +104,8 @@ patch release:
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
-minor release:
-  stage: deploy
+tag:minor:
+  stage: release
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
@@ -110,8 +118,8 @@ minor release:
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
-major release:
-  stage: deploy
+tag:major:
+  stage: release
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
@@ -124,10 +132,11 @@ major release:
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
-publish:
-  stage: deploy
+publish:gitlab:
+  stage: release
   rules:
     - if: $CI_COMMIT_TAG
   script:
-    - npm config set -- //${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}
+    - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+    - npm config set "@mrpelz:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
     - npm publish

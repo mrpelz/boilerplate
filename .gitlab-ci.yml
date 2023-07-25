@@ -1,1 +1,10 @@
 include: '/config/.gitlab-ci.yml'
+
+publish:npm:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
+    - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
+    - npm publish
