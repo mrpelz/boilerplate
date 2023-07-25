@@ -2,14 +2,14 @@
 
 export PATH := node_modules/.bin:$(PATH)
 
-PKG_NAME = $(shell npm pkg get name --workspaces=false | sed -nr 's/^"@(.+)"$$/\1/p')
+PKG_NAME = $(shell npm pkg get name | sed -nr 's/^"@(.+)"$$/\1/p')
 GIT_NAME = $(shell git remote get-url origin | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
 
-PKG_VERSION = $(shell npm pkg get version --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
+PKG_VERSION = $(shell npm pkg get version | sed -nr 's/^"(.+)"$$/\1/p')
 GIT_VERSION = $(shell git describe --tag --abbrev=0 | sed -nr 's/^v(.+)$$/\1/p')
 
-PKG_REPO_TYPE = $(shell npm pkg get repository.type --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p')
-PKG_REPO_NAME = $(shell npm pkg get repository.url --workspaces=false | sed -nr 's/^"(.+)"$$/\1/p' | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
+PKG_REPO_TYPE = $(shell npm pkg get repository.type | sed -nr 's/^"(.+)"$$/\1/p')
+PKG_REPO_NAME = $(shell npm pkg get repository.url | sed -nr 's/^"(.+)"$$/\1/p' | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
 
 check: check_commit check_package_json check_lint check_config check_typescript check_test
 
@@ -38,8 +38,6 @@ check_test:
 check_typescript:
 	tsc
 
-hook_prepack: util_clear transform_typescript
-
 transform: transform_package_json transform_lint transform_typescript
 
 transform_clear: util_clear transform
@@ -56,6 +54,8 @@ transform_package_json:
 
 transform_typescript:
 	tsc --project tsconfig.build.json
+
+transform_typescript_clear: util_clear transform_typescript
 
 util_clear:
 	rm -rf dist/{*,.*}

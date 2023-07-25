@@ -13,13 +13,10 @@
     "boilerplate-bootstrap": "scripts/bootstrap.sh"
   },
   "files": [
-    "dist/**/*.{js,js.map}",
+    "dist/**/*.{js,js.map,ts}",
     "config/**/{*,.*}",
     "scripts/bootstrap.sh"
   ],
-  "scripts": {
-    "prepack": "make hook_prepack"
-  },
   "devDependencies": {
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
@@ -42,8 +39,5 @@
     "sort-package-json": "latest",
     "ts-jest": "latest",
     "typescript": "latest"
-  },
-  "publishConfig": {
-    "@mrpelz:registry": "https://git.i.wurstsalat.cloud/api/v4/projects/111/packages/npm/"
   }
 }
