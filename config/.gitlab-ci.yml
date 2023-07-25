@@ -10,27 +10,6 @@ stages:
   - check
   - deploy
 
-remove prereleases:
-  stage: prepare
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  script:
-    - git config user.email "$CI_BOT_EMAIL"
-    - git config user.name "$CI_BOT_NAME"
-    - git remote add gitlab_origin "$CI_BOT_ORIGIN"
-    - git fetch gitlab_origin "$CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME" --tags
-    - git switch "$CI_COMMIT_REF_NAME"
-    - |
-      TAGS=$(git tag --merged | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-.+\.[0-9]+$/\0/p')
-
-      for TAG in $TAGS; do
-        git tag --delete "$TAG"
-        curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG"
-      done
-
-    - make transform_package_json
-    - git push gitlab_origin
-
 install dependencies:
   stage: prepare
   rules:
@@ -97,19 +76,10 @@ prerelease:
     - git config user.email "$CI_BOT_EMAIL"
     - git config user.name "$CI_BOT_NAME"
     - git remote add gitlab_origin "$CI_BOT_ORIGIN"
-    - git fetch gitlab_origin "$CI_COMMIT_REF_NAME:$CI_COMMIT_REF_NAME" --tags
-    - git switch "$CI_COMMIT_REF_NAME"
     - |
-      TAGS=$(git tag --no-merged | sed -nr 's/^v[0-9]+\.[0-9]+\.[0-9]+-$CI_COMMIT_REF_NAME\.[0-9]+$/\0/p')
-
-      for TAG in $TAGS; do
-        git tag --delete "$TAG"
-        curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG"
-      done
-
-    - npm version prerelease --preid "$CI_COMMIT_REF_SLUG"
+      TAG=$(npm version prerelease --preid "$CI_COMMIT_REF_SLUG")
+      curl -s -H "PRIVATE-TOKEN: $CI_BOT_TOKEN" -X DELETE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/tags/$TAG" >/dev/null
     - git push gitlab_origin --tags
-    - git push gitlab_origin --push-option=ci.skip
 
 patch release:
   stage: deploy
