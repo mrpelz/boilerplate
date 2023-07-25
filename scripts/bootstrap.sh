@@ -256,7 +256,8 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"author=Lennart Pelz <mail@mrpelz.de>" \
 		"type=module" \
 		"main=dist/main.js" \
-		"files[0]=dist/**/*.{js,js.map,ts}" \
+		"types=dist/main.d.ts" \
+		"files[0]=dist/**/*.{js,map,ts}" \
 		"devDependencies.@commitlint/cli=latest" \
 		"devDependencies.@commitlint/config-conventional=latest" \
 		"devDependencies.@commitlint/types=latest" \

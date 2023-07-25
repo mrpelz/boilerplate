@@ -9,11 +9,12 @@
   "author": "Lennart Pelz <mail@mrpelz.de>",
   "type": "module",
   "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "bin": {
     "boilerplate-bootstrap": "scripts/bootstrap.sh"
   },
   "files": [
-    "dist/**/*.{js,js.map,ts}",
+    "dist/**/*.{js,map,ts}",
     "config/**/{*,.*}",
     "scripts/bootstrap.sh"
   ],

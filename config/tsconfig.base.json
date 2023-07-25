@@ -3,6 +3,8 @@
     "allowJs": true,
     "alwaysStrict": true,
     "checkJs": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "incremental": true,
     "lib": [
