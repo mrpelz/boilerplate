@@ -92,8 +92,8 @@ patch release:
     - git config user.name "$CI_BOT_NAME"
     - git remote add gitlab_origin "$CI_BOT_ORIGIN"
     - npm version patch
-    - git push gitlab_origin --tags
     - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin --tags
 
 minor release:
   stage: deploy
@@ -106,8 +106,8 @@ minor release:
     - git config user.name "$CI_BOT_NAME"
     - git remote add gitlab_origin "$CI_BOT_ORIGIN"
     - npm version minor
-    - git push gitlab_origin --tags
     - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin --tags
 
 major release:
   stage: deploy
@@ -120,8 +120,8 @@ major release:
     - git config user.name "$CI_BOT_NAME"
     - git remote add gitlab_origin "$CI_BOT_ORIGIN"
     - npm version major
-    - git push gitlab_origin --tags
     - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
+    - git push gitlab_origin --tags
 
 publish:
   stage: deploy
