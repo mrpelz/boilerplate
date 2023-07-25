@@ -91,6 +91,7 @@ patch release:
     - git config user.email "$CI_BOT_EMAIL"
     - git config user.name "$CI_BOT_NAME"
     - git remote add gitlab_origin "$CI_BOT_ORIGIN"
+    - npm version patch
     - git push gitlab_origin --tags
     - git push gitlab_origin "HEAD:$CI_COMMIT_REF_NAME" --push-option=ci.skip
 
