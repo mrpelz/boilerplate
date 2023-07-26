@@ -304,7 +304,7 @@ if check_command git; then
 	if [ -d ".git" ]; then
 		if check_response "🪝 install git hooks?" y; then
 			make_ln "${BOILERPLATE_MODULE_PATH}config/.husky/commit-msg" .husky/commit-msg
-			make util_install-git-hooks
+			make util_install_git_hooks
 		fi
 	else
 		echo "❌ \"$PWD\" does not seem to be a git repository, not installing git hooks"

@@ -453,11 +453,10 @@ export const configMeta = {
     'import/no-named-as-default-member': 'off',
   },
   settings: {
-    settings: {
-      'import/resolver': {
-        typescript: {
-          project: 'tsconfig.meta.json',
-        },
+    'import/resolver': {
+      typescript: {
+        enforceExtension: true,
+        project: 'tsconfig.meta.json',
       },
     },
   },
@@ -483,8 +482,9 @@ export const config = {
   settings: {
     'import/resolver': {
       typescript: {
+        enforceExtension: true,
         extensionAlias: {
-          '.js': ['.ts', '.tsx', '.d.ts', '.js'],
+          '.js': ['.d.ts', '.ts', '.tsx', '.js'],
         },
         project: 'tsconfig.json',
       },

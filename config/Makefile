@@ -11,6 +11,8 @@ GIT_VERSION = $(shell git describe --tag --abbrev=0 | sed -nr 's/^v(.+)$$/\1/p')
 PKG_REPO_TYPE = $(shell npm pkg get repository.type | sed -nr 's/^"(.+)"$$/\1/p')
 PKG_REPO_NAME = $(shell npm pkg get repository.url | sed -nr 's/^"(.+)"$$/\1/p' | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p')
 
+ESLINT_ARGS = --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*"
+
 check: check_commit check_package_json check_lint check_config check_typescript check_test
 
 check_commit:
@@ -20,7 +22,7 @@ check_config:
 	tsc --project tsconfig.meta.json
 
 check_lint:
-	eslint --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*" .
+	eslint $(ESLINT_ARGS) .
 
 check_package_json:
 	sort-package-json --check
@@ -43,7 +45,7 @@ transform: transform_package_json transform_lint transform_typescript
 transform_clear: util_clear transform
 
 transform_lint:
-	eslint --fix --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*" .
+	eslint --fix $(ESLINT_ARGS) .
 
 transform_package_json:
 	npm pkg set "name=@$(GIT_NAME)"
@@ -60,7 +62,7 @@ transform_typescript_clear: util_clear transform_typescript
 util_clear:
 	rm -rf dist/{*,.*}
 
-util_install-git-hooks:
+util_install_git_hooks:
 	husky install
 
 watch:
