@@ -214,12 +214,14 @@ export const rules = {
     {
       cjs: 'never',
       js: 'always',
+      jsx: 'never',
       mjs: 'never',
       ts: 'never',
+      tsx: 'never',
     },
   ],
   'import/no-commonjs': 'error',
-  'import/no-duplicates': 'warn',
+  'import/no-duplicates': 'error',
   'import/no-named-as-default': 'warn',
   'import/no-named-as-default-member': 'warn',
   'jsx-quotes': 'error',
@@ -484,7 +486,8 @@ export const config = {
       typescript: {
         enforceExtension: true,
         extensionAlias: {
-          '.js': ['.d.ts', '.ts', '.tsx', '.js'],
+          '.js': ['.cjs', '.js', '.mjs', '.ts'],
+          '.jsx': ['.jsx', '.tsx'],
         },
         project: 'tsconfig.json',
       },

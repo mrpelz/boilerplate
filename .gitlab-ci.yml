@@ -1,4 +1,4 @@
-include: "/config/.gitlab-ci.yml"
+include: "/gitlab/.gitlab-ci.yml"
 
 publish:npm:
   stage: release

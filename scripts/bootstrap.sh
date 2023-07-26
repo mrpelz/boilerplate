@@ -166,7 +166,8 @@ if check_response "🖇 install symbolic links referencing files in boilerplate?
 fi
 
 if check_response "📃 install bare config files extending base files in boilerplate?" y; then
-# purposefully not indented
+
+# no indent
 make_config .gitignore "$(cat << EOF
 .DS_Store
 dist
@@ -245,15 +246,14 @@ make_config tsconfig.meta.json "$(cat << EOF
 EOF
 )"
 
-# purposefully not indented
 make_config .gitlab-ci.yml "$(if [ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]; then cat << EOF
 include:
   - project: "mrpelz/boilerplate"
     ref: main
-    file: "/config/.gitlab-ci.yml"
+    file: "/gitlab/.gitlab-ci.yml"
 EOF
 else cat << EOF
-include: "/config/.gitlab-ci.yml"
+include: "/gitlab/.gitlab-ci.yml"
 EOF
 fi)"
 fi
