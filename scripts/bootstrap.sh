@@ -20,11 +20,19 @@ check_response () {
 
 	echo "❓ $CHECK_PROMPT"
 
+	local CHECK_SUFFIX
+
+	case $DEFAULT_RESPONSE in
+		y|Y ) CHECK_SUFFIX="[Y/n]";;
+		n|N ) CHECK_SUFFIX="[y/N]";;
+		* ) CHECK_SUFFIX="[y/n]";;
+	esac
+
 	case $OVERRIDE in
 		y|Y ) CHOICE=y;;
 		n|N ) CHOICE=n;;
 		d|D ) CHOICE=$DEFAULT_RESPONSE;;
-		* ) read -r -p "❔ [y/n] (default: $DEFAULT_RESPONSE) $ " CHOICE;;
+		* ) read -r -p "❔ $CHECK_SUFFIX " CHOICE;;
 	esac
 
 	if [ -z "$CHOICE" ]; then
@@ -240,12 +248,12 @@ EOF
 # purposefully not indented
 make_config .gitlab-ci.yml "$(if [ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]; then cat << EOF
 include:
-  - project: 'mrpelz/boilerplate'
+  - project: "mrpelz/boilerplate"
     ref: main
-    file: '/config/.gitlab-ci.yml'
+    file: "/config/.gitlab-ci.yml"
 EOF
 else cat << EOF
-include: '/config/.gitlab-ci.yml'
+include: "/config/.gitlab-ci.yml"
 EOF
 fi)"
 fi

@@ -18,6 +18,7 @@ npm install:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_TAG
   script:
+    - npm config set "//${CI_SERVER_HOST}/:_authToken=${CI_JOB_TOKEN}"
     - npm install
 
 check_commit:
