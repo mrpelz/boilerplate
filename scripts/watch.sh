@@ -1,1 +1,1 @@
-/home/mrpelz/work/misc/boilerplate/config/watch.sh
+../config/watch.sh

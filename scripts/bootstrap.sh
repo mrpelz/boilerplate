@@ -104,7 +104,7 @@ make_ln () {
 
 	if check_non_existent "$LINK_PATH" "🪠 overwrite with link?"; then
 		mkdir -p "$LINK_DIR"
-		ln -f -s "$PWD/$TARGET_PATH" "$LINK_PATH"
+		ln -f -r -s "$PWD/$TARGET_PATH" "$LINK_PATH"
 	fi
 }
 

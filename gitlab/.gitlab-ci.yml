@@ -41,7 +41,11 @@ check_lint:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "**/*.{js,ts}"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "**/*.{js,ts}"
   script:
     - make check_lint
 
@@ -49,7 +53,11 @@ check_config:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "**/*.js"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "**/*.js"
   script:
     - make check_config
 
@@ -57,7 +65,11 @@ check_typescript:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "src/**/*.{js,ts}"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "src/**/*.{js,ts}"
   script:
     - make check_typescript
 
@@ -65,7 +77,11 @@ check_test:
   stage: check
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "src/**/*.{js,ts}"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "src/**/*.{js,ts}"
   script:
     - make check_test
 

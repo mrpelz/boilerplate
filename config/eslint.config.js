@@ -486,8 +486,7 @@ export const config = {
       typescript: {
         enforceExtension: true,
         extensionAlias: {
-          '.js': ['.cjs', '.js', '.mjs', '.ts'],
-          '.jsx': ['.jsx', '.tsx'],
+          '.js': ['.js', '.ts'],
         },
         project: 'tsconfig.json',
       },

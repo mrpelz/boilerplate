@@ -1,1 +1,1 @@
-/home/mrpelz/work/misc/boilerplate/config/dev.sh
+../config/dev.sh
