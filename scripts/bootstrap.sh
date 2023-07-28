@@ -150,6 +150,11 @@ if ! check_command make; then
   exit 1
 fi
 
+if ! check_command sed; then
+	echo "❌ \"sed\" is not available, aborting"
+  exit 1
+fi
+
 if ! check_command tmux; then
 	echo "❌ \"tmux\" is not available, aborting"
   exit 1
@@ -264,6 +269,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"author=Lennart Pelz <mail@mrpelz.de>" \
 		"type=module" \
 		"main=dist/main.js" \
+		"module=dist/main.js" \
 		"types=dist/main.d.ts" \
 		"files[0]=dist/**/*.{js,map,ts}" \
 		"devDependencies.@commitlint/cli=latest" \

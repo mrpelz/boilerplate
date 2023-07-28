@@ -24,15 +24,20 @@ check_config:
 check_lint:
 	eslint $(ESLINT_ARGS) .
 
-check_package_json:
-	sort-package-json --check
+check_package_json: check_package_json_sort check_package_json_repository check_package_json_name check_package_json_version
 
+check_package_json_name:
 	if [ "$(PKG_NAME)" = "$(GIT_NAME)" ]; then exit 0; else echo "name in package.json ($(PKG_NAME)) does not match git repository name ($(GIT_NAME))"; exit 1; fi
 
-	if [ "$(PKG_VERSION)" = "$(GIT_VERSION)" ]; then exit 0; else echo "version in package.json ($(PKG_VERSION)) does not match git repository version ($(GIT_VERSION))"; exit 1; fi
-
+check_package_json_repository:
 	if [ "$(PKG_REPO_TYPE)" = "git" ]; then exit 0; else echo "repository.type in package.json ($(PKG_REPO_TYPE)) does not match \"git\""; exit 1; fi
 	if [ "$(PKG_REPO_NAME)" = "$(GIT_NAME)" ]; then exit 0; else echo "package name derived from repository.url in package.json ($(PKG_REPO_NAME)) does not match git repository name ($(GIT_NAME))"; exit 1; fi
+
+check_package_json_sort:
+	sort-package-json --check
+
+check_package_json_version:
+	if [ "$(PKG_VERSION)" = "$(GIT_VERSION)" ]; then exit 0; else echo "version in package.json ($(PKG_VERSION)) does not match git repository version ($(GIT_VERSION))"; exit 1; fi
 
 check_test:
 	jest .
@@ -47,17 +52,21 @@ transform_clear: util_clear transform
 transform_lint:
 	eslint --fix $(ESLINT_ARGS) .
 
-transform_package_json:
-	npm pkg set "name=@$(GIT_NAME)"
-	npm pkg set "version=$(GIT_VERSION)"
-	npm pkg set "repository.type=git"
+transform_package_json: transform_package_json_sort transform_package_json_name transform_package_json_version
 
+transform_package_json_name:
+	npm pkg set "name=@$(GIT_NAME)"
+
+transform_package_json_sort:
 	sort-package-json
+
+transform_package_json_version:
+	npm pkg set "version=$(GIT_VERSION)"
+
+transform_prod: util_clear transform_typescript
 
 transform_typescript:
 	tsc --project tsconfig.build.json
-
-transform_typescript_clear: util_clear transform_typescript
 
 util_clear:
 	rm -rf dist/{*,.*}
