@@ -6,9 +6,17 @@ import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
 // @ts-ignore
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+// @ts-ignore
+import pluginUnicorn from 'eslint-plugin-unicorn';
+
+const unicornRecommendedRules =
+  /** @type {import('eslint').Linter.RulesRecord} */ (
+    pluginUnicorn.configs.recommended.rules
+  ); // assert correct type, as "eslint-plugin-unicorn" has no type definitions
 
 /** @type {import('eslint').Linter.RulesRecord} */
 export const rules = {
+  ...unicornRecommendedRules,
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
   '@typescript-eslint/ban-types': 'error',
@@ -76,6 +84,7 @@ export const rules = {
     {
       format: ['camelCase'],
       selector: 'default',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase', 'PascalCase'],
@@ -416,6 +425,7 @@ export const rules = {
   'template-curly-spacing': ['error', 'never'],
   'template-tag-spacing': 'error',
   'unicode-bom': ['error', 'never'],
+  'unicorn/no-null': 'off',
   'use-isnan': 'error',
   'vars-on-top': 'error',
   'wrap-regex': 'error',
@@ -430,6 +440,7 @@ export const plugins = {
   prettier: prettierPlugin,
   // @ts-ignore
   'simple-import-sort': simpleImportSortPlugin,
+  unicorn: { rules: pluginUnicorn.rules },
 };
 
 /** @type {import('eslint').Linter.FlatConfig} */
@@ -451,6 +462,7 @@ export const configMeta = {
     '@typescript-eslint/naming-convention': 'off',
     'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',
+    'unicorn/prefer-export-from': 'off',
   },
   settings: {
     'import/resolver': {

@@ -280,6 +280,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"devDependencies.eslint-plugin-import=latest" \
 		"devDependencies.eslint-plugin-prettier=latest" \
 		"devDependencies.eslint-plugin-simple-import-sort=latest" \
+		"devDependencies.eslint-plugin-unicorn=latest" \
 		"devDependencies.husky=latest" \
 		"devDependencies.jest=latest" \
 		"devDependencies.prettier=latest" \
@@ -312,5 +313,7 @@ if check_command git; then
 else
 	echo "❌ \"git\" is not available, not istalling git hooks"
 fi
+
+make transform_package_json_sort
 
 echo "✅ done"
