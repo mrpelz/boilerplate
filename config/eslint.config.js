@@ -6,9 +6,17 @@ import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
 // @ts-ignore
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+// @ts-ignore
+import pluginUnicorn from 'eslint-plugin-unicorn';
+
+const unicornRecommendedRules =
+  /** @type {import('eslint').Linter.RulesRecord} */ (
+    pluginUnicorn.configs.recommended.rules
+  ); // assert correct type, as "eslint-plugin-unicorn" has no type definitions
 
 /** @type {import('eslint').Linter.RulesRecord} */
 export const rules = {
+  ...unicornRecommendedRules,
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
   '@typescript-eslint/ban-types': 'error',
@@ -76,44 +84,53 @@ export const rules = {
     {
       format: ['camelCase'],
       selector: 'default',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase', 'PascalCase'],
       selector: 'function',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
       leadingUnderscore: 'allow',
       selector: 'variable',
+      trailingUnderscore: 'allow',
     },
     {
       format: null,
       modifiers: ['destructured'],
       selector: 'variable',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase'],
       leadingUnderscore: 'allow',
       selector: 'parameter',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase'],
       leadingUnderscore: 'allow',
       selector: 'memberLike',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['camelCase'],
       leadingUnderscore: 'require',
       modifiers: ['private'],
       selector: 'memberLike',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['UPPER_CASE'],
       selector: 'enumMember',
+      trailingUnderscore: 'allow',
     },
     {
       format: ['PascalCase'],
       selector: 'typeLike',
+      trailingUnderscore: 'allow',
     },
   ],
   '@typescript-eslint/no-array-constructor': 'error',
@@ -416,6 +433,15 @@ export const rules = {
   'template-curly-spacing': ['error', 'never'],
   'template-tag-spacing': 'error',
   'unicode-bom': ['error', 'never'],
+  'unicorn/no-null': 'off',
+  'unicorn/no-useless-undefined': 'off',
+  'unicorn/number-literal-case': 'off',
+  'unicorn/prefer-native-coercion-functions': 'off',
+  'unicorn/prefer-regexp-test': 'off',
+  'unicorn/prefer-set-has': 'off',
+  'unicorn/prefer-spread': 'off',
+  'unicorn/prefer-top-level-await': 'off',
+  'unicorn/prevent-abbreviations': 'off',
   'use-isnan': 'error',
   'vars-on-top': 'error',
   'wrap-regex': 'error',
@@ -430,6 +456,7 @@ export const plugins = {
   prettier: prettierPlugin,
   // @ts-ignore
   'simple-import-sort': simpleImportSortPlugin,
+  unicorn: { rules: pluginUnicorn.rules },
 };
 
 /** @type {import('eslint').Linter.FlatConfig} */
@@ -451,6 +478,7 @@ export const configMeta = {
     '@typescript-eslint/naming-convention': 'off',
     'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',
+    'unicorn/prefer-export-from': 'off',
   },
   settings: {
     'import/resolver': {
