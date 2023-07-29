@@ -34,6 +34,7 @@
     "eslint-plugin-import": "latest",
     "eslint-plugin-prettier": "latest",
     "eslint-plugin-simple-import-sort": "latest",
+    "eslint-plugin-unicorn": "latest",
     "husky": "latest",
     "jest": "latest",
     "prettier": "latest",
