@@ -35,7 +35,7 @@ check_response () {
 		* ) read -r -p "❔ $CHECK_SUFFIX " CHOICE;;
 	esac
 
-	if [ -z "$CHOICE" ]; then
+	if [[ -z "$CHOICE" ]]; then
 		CHOICE=$DEFAULT_RESPONSE
 	fi
 
@@ -62,7 +62,7 @@ check_non_existent () {
 	local FILE_PATH=$1
 	local OVERRIDE_PROMPT=$2
 
-	if [ -e "$FILE_PATH" ]; then
+	if [[ -e "$FILE_PATH" ]]; then
 		echo "💾 file already exists"
 
 		if check_response "$OVERRIDE_PROMPT" n; then
@@ -135,7 +135,7 @@ make_config () {
 
 ## FLOW
 
-if [ "$(npm pkg get name)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]; then
+if [[ "$(npm pkg get name)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]]; then
 	echo "📍 running within \"$BOILERPLATE_MODULE_IDENTIFIER\""
 
 	BOILERPLATE_MODULE_NAME="."
@@ -187,8 +187,6 @@ EOF
 )"
 
 make_config commitlint.config.js "$(cat << EOF
-// @ts-check
-
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/commitlint.config.js';
 
@@ -198,8 +196,6 @@ EOF
 )"
 
 make_config eslint.config.js "$(cat << EOF
-// @ts-check
-
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/eslint.config.js';
 
@@ -209,8 +205,6 @@ EOF
 )"
 
 make_config jest.config.js "$(cat << EOF
-// @ts-check
-
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/jest.config.js';
 
@@ -251,7 +245,7 @@ make_config tsconfig.meta.json "$(cat << EOF
 EOF
 )"
 
-make_config .gitlab-ci.yml "$(if [ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]; then cat << EOF
+make_config .gitlab-ci.yml "$(if [[ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]]; then cat << EOF
 include:
   - project: "mrpelz/boilerplate"
     ref: main
@@ -286,6 +280,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"devDependencies.eslint-plugin-import=latest" \
 		"devDependencies.eslint-plugin-prettier=latest" \
 		"devDependencies.eslint-plugin-simple-import-sort=latest" \
+		"devDependencies.eslint-plugin-unicorn=latest" \
 		"devDependencies.husky=latest" \
 		"devDependencies.jest=latest" \
 		"devDependencies.prettier=latest" \
@@ -307,7 +302,7 @@ if check_response "📂 create \"dist\" directory (this will *not* overwrite/emp
 fi
 
 if check_command git; then
-	if [ -d ".git" ]; then
+	if [[ -d ".git" ]]; then
 		if check_response "🪝 install git hooks?" y; then
 			make_ln "${BOILERPLATE_MODULE_PATH}config/.husky/commit-msg" .husky/commit-msg
 			make util_install_git_hooks
@@ -318,5 +313,7 @@ if check_command git; then
 else
 	echo "❌ \"git\" is not available, not istalling git hooks"
 fi
+
+make transform_package_json_sort
 
 echo "✅ done"
