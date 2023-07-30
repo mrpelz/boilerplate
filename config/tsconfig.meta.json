@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "incremental": false,
+    "moduleResolution": "node",
     "skipLibCheck": true,
   },
   "extends": "./tsconfig.base.json",

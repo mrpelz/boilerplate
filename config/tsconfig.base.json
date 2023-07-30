@@ -8,11 +8,10 @@
     "esModuleInterop": true,
     "incremental": true,
     "lib": [
-      "esnext",
-      "dom"
+      "esnext"
     ],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
