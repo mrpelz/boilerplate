@@ -59,9 +59,11 @@ check_config:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - "**/*.js"
+        - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "**/*.js"
+        - "**/tsconfig*.json"
   script:
     - make check_config
 
@@ -71,9 +73,11 @@ check_typescript:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - "src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
   script:
     - make check_typescript
 
@@ -83,9 +87,11 @@ check_test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - "src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
   script:
     - make check_test
 

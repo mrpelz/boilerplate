@@ -2,7 +2,7 @@
 
 SHELL := /usr/bin/env bash
 
-export PATH := node_modules/.bin:$(PATH)
+export PATH := $(shell npm root)/.bin:$(PATH)
 
 PKG_NAME := $(shell npm pkg get name 2>/dev/null | sed -nr 's/^"@(.+)"$$/\1/p' 2>/dev/null)
 GIT_NAME := $(shell git remote get-url origin 2>/dev/null | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p' 2>/dev/null)
