@@ -1,1 +1,1 @@
-include config/Makefile
+include ./config/Makefile

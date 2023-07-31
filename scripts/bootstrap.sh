@@ -6,8 +6,7 @@ OVERRIDE=$1
 BOILERPLATE_MODULE_IDENTIFIER="@mrpelz/boilerplate"
 
 BOILERPLATE_MODULE_NAME=$BOILERPLATE_MODULE_IDENTIFIER
-BOILERPLATE_MODULE_PATH="node_modules/$BOILERPLATE_MODULE_IDENTIFIER/"
-BOILERPLATE_MODULE_PATH_LEADING_DOT="./node_modules/$BOILERPLATE_MODULE_IDENTIFIER/"
+BOILERPLATE_MODULE_PATH="$(realpath --relative-to=. "$(npm root)")/$BOILERPLATE_MODULE_IDENTIFIER/"
 
 FORMAT_BOLD=$(tput bold)
 FORMAT_NORMAL=$(tput sgr0)
@@ -139,8 +138,7 @@ if [[ "$(npm pkg get name)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]]; then
 	echo "📍 running within \"$BOILERPLATE_MODULE_IDENTIFIER\""
 
 	BOILERPLATE_MODULE_NAME="."
-	BOILERPLATE_MODULE_PATH=""
-	BOILERPLATE_MODULE_PATH_LEADING_DOT="./"
+	BOILERPLATE_MODULE_PATH="./"
 else
 	echo "ℹ️ running with \"$BOILERPLATE_MODULE_IDENTIFIER\" as dependency"
 fi
@@ -218,7 +216,7 @@ make_config tsconfig.json "$(cat << EOF
   "compilerOptions": {
     "outDir": "dist",
   },
-  "extends": "${BOILERPLATE_MODULE_PATH_LEADING_DOT}config/tsconfig.base.json",
+  "extends": "${BOILERPLATE_MODULE_PATH}config/tsconfig.base.json",
   "include": ["src/**/*"]
 }
 EOF
@@ -239,7 +237,7 @@ EOF
 make_config tsconfig.meta.json "$(cat << EOF
 {
   "exclude": ["dist/**/*", "node_modules/**/*", "src/**/*"],
-  "extends": "${BOILERPLATE_MODULE_PATH_LEADING_DOT}config/tsconfig.meta.json",
+  "extends": "${BOILERPLATE_MODULE_PATH}config/tsconfig.meta.json",
   "include": ["**/*.js"]
 }
 EOF
