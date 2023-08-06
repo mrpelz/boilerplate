@@ -225,7 +225,7 @@ export const rules = {
   'id-match': 'error',
   'import/extensions': [
     'error',
-    'always',
+    'ignorePackages',
     {
       cjs: 'never',
       js: 'always',
