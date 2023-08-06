@@ -216,7 +216,7 @@ make_config tsconfig.json "$(cat << EOF
   "compilerOptions": {
     "outDir": "dist",
   },
-  "extends": "${BOILERPLATE_MODULE_PATH}config/tsconfig.base.json",
+  "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.base.json",
   "include": ["src/**/*"]
 }
 EOF
@@ -237,7 +237,7 @@ EOF
 make_config tsconfig.meta.json "$(cat << EOF
 {
   "exclude": ["dist/**/*", "node_modules/**/*", "src/**/*"],
-  "extends": "${BOILERPLATE_MODULE_PATH}config/tsconfig.meta.json",
+  "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.meta.json",
   "include": ["**/*.js"]
 }
 EOF
