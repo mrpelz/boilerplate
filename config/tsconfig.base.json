@@ -8,16 +8,16 @@
     "esModuleInterop": true,
     "incremental": true,
     "lib": [
-      "esnext"
+      "ESNext"
     ],
-    "module": "esnext",
-    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "esnext",
+    "target": "ESNext",
     "useDefineForClassFields": true
   },
 }

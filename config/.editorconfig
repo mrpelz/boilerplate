@@ -11,5 +11,5 @@ trim_trailing_whitespace = true
 [*.sh]
 indent_style = tab
 
-[Makefile,*.mk]
+[{Makefile,*.mk}]
 indent_style = tab
