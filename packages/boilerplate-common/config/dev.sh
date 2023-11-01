@@ -23,7 +23,3 @@ tmux \
 	set-option -p pane-border-format "tsc (tsconfig.meta.json, checks files outside \"src\")" \; \
 	split-window -f -v -l 5 \; \
 	set-option -p pane-border-format "input" \; \
-	split-window -f -v -l 1 "echo -n \"…\"" \; \
-	set-option -p pane-border-format "" \; \
-	set-option -p remain-on-exit-format "press [Ctrl+D] to exit, [Ctrl+<arrow>] to select panes, [Ctrl+Space] to toggle pane fullscreen" \; \
-	select-pane -t 4 \; \

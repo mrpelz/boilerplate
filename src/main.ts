@@ -1,3 +1,2 @@
 // noop
-
-export const sum = (a: number, b: number): number => a + b;
+// eslint-disable-next-line unicorn/no-empty-file
