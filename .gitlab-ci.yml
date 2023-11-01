@@ -1,5 +1,115 @@
 include: "/gitlab/.gitlab-ci.yml"
 
+npm install:
+  script:
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - npm ci --workspaces --include-workspace-root --audit=false --fund=false
+
+check_package_json:
+  script:
+    - make -s check_package_json
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE check_package_json; done
+
+check_lint:
+  script:
+    - make -s check_lint
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE check_lint; done
+
+check_config:
+  script:
+    - make -s check_config
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE check_config; done
+
+check_typescript:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
+  script:
+    - make -s check_typescript
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE check_typescript; done
+
+check_test:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
+        - "**/tsconfig*.json"
+  script:
+    - make -s check_test
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE check_test; done
+
+transform_prod:
+  script:
+    - make -s transform_prod
+    - for PACKAGE in packages/*; do make -s -C $PACKAGE transform_prod; done
+
+tag:prerelease:
+  script:
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - npm version prerelease --workspaces --include-workspace-root --git-tag-version=false --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    - git add --all .
+    - git commit -m "$(make -s util_get_version 2>/dev/null)"
+    - git tag "v$(make -s util_get_version 2>/dev/null)"
+    - git push gitlab_origin --tags
+
+tag:patch:
+  script:
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - npm version patch --workspaces --include-workspace-root --git-tag-version=false
+    - git add --all .
+    - git commit -m "$(make -s util_get_version 2>/dev/null)"
+    - git tag "v$(make -s util_get_version 2>/dev/null)"
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
+    - git push gitlab_origin --tags
+
+tag:minor:
+  script:
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - npm version minor --workspaces --include-workspace-root --git-tag-version=false
+    - git add --all .
+    - git commit -m "$(make -s util_get_version 2>/dev/null)"
+    - git tag "v$(make -s util_get_version 2>/dev/null)"
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
+    - git push gitlab_origin --tags
+
+tag:major:
+  script:
+    - git config user.email "${CI_BOT_EMAIL}"
+    - git config user.name "${CI_BOT_NAME}"
+    - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - npm version major --workspaces --include-workspace-root --git-tag-version=false
+    - git add --all .
+    - git commit -m "$(make -s util_get_version 2>/dev/null)"
+    - git tag "v$(make -s util_get_version 2>/dev/null)"
+    - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
+    - git push gitlab_origin --tags
+
+publish:gitlab:
+  script:
+    - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
+    - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+    - npm publish --workspaces
+
 publish:npm:
   stage: release
   rules:
@@ -10,4 +120,5 @@ publish:npm:
   script:
     - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
     - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
-    - npm publish --access public
+    # - npm publish --access public
+    - npm publish --workspaces --access public
