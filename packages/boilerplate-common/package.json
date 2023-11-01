@@ -1,0 +1,46 @@
+{
+  "name": "@mrpelz/boilerplate-common",
+  "version": "6.3.2",
+  "repository": {
+    "type": "git",
+    "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git",
+    "directory": "packages/boilerplate-common"
+  },
+  "license": "UNLICENSED",
+  "author": "Lennart Pelz <mail@mrpelz.de>",
+  "type": "module",
+  "main": "dist/main.js",
+  "module": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "bin": {
+    "boilerplate-bootstrap": "scripts/bootstrap.sh"
+  },
+  "files": [
+    "dist/**/*.{js,map,ts}",
+    "config/**/{*,.*}",
+    "scripts/bootstrap.sh"
+  ],
+  "dependencies": {
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "@commitlint/types": "latest",
+    "@jest/globals": "latest",
+    "@types/eslint": "latest",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "@typescript-eslint/types": "latest",
+    "chokidar-cli": "latest",
+    "eslint": "latest",
+    "eslint-import-resolver-typescript": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-prettier": "latest",
+    "eslint-plugin-simple-import-sort": "latest",
+    "eslint-plugin-unicorn": "latest",
+    "husky": "latest",
+    "jest": "latest",
+    "prettier": "latest",
+    "sort-package-json": "latest",
+    "ts-jest": "latest",
+    "typescript": "latest"
+  }
+}
