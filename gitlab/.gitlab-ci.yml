@@ -31,7 +31,7 @@ check_commit:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - make check_commit
+    - make -s check_commit
 
 check_package_json:
   stage: check
@@ -39,7 +39,7 @@ check_package_json:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - make check_package_json
+    - make -s check_package_json
 
 check_lint:
   stage: check
@@ -51,7 +51,7 @@ check_lint:
       changes:
         - "**/*.{js,ts}"
   script:
-    - make check_lint
+    - make -s check_lint
 
 check_config:
   stage: check
@@ -65,7 +65,7 @@ check_config:
         - "**/*.js"
         - "**/tsconfig*.json"
   script:
-    - make check_config
+    - make -s check_config
 
 check_typescript:
   stage: check
@@ -73,13 +73,15 @@ check_typescript:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
         - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
         - "**/tsconfig*.json"
   script:
-    - make check_typescript
+    - make -s check_typescript
 
 check_test:
   stage: check
@@ -87,20 +89,22 @@ check_test:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
         - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
         - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts}"
+        - "packages/*/src/**/*.{js,ts}"
         - "**/tsconfig*.json"
   script:
-    - make check_test
+    - make -s check_test
 
 transform_prod:
   stage: transform
   rules:
     - if: $CI_COMMIT_TAG
   script:
-    - make transform_prod
+    - make -s transform_prod
 
 tag:prerelease:
   stage: release
@@ -167,3 +171,15 @@ publish:gitlab:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
     - npm publish
+
+publish:npm:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: on_success
+    - if: $CI_COMMIT_TAG
+      when: manual
+  script:
+    - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
+    - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
+    - npm publish --access public

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tmux \
-	new-session "make watch_lint" \; \
+	new-session "make -s watch_lint" \; \
 	bind-key -n C-d "set-option -w remain-on-exit off; set-option -w synchronize-panes on; send-keys C-c; kill-pane; kill-pane" \; \
 	bind-key -n C-Down "select-pane -D" \; \
 	bind-key -n C-Left "select-pane -L" \; \
@@ -15,15 +15,10 @@ tmux \
 	set-option -w remain-on-exit on \; \
 	set-option -w status off \; \
 	set-option -p pane-border-format "eslint (eslint.config.json, includes files outside \"src\")" \; \
-	split-window -h -l 50% "make watch_test" \; \
+	split-window -h -l 50% "make -s watch_test" \; \
 	set-option -p pane-border-format "jest (jest.config.json)" \; \
-	split-window -f -v -l 50% "make watch_typescript" \; \
+	split-window -f -v -l 50% "make -s watch_typescript" \; \
 	set-option -p pane-border-format "tsc (tsconfig.build.json, excludes test-files)" \; \
-	split-window -h -l 50% "make watch_config" \; \
+	split-window -h -l 50% "make -s watch_config" \; \
 	set-option -p pane-border-format "tsc (tsconfig.meta.json, checks files outside \"src\")" \; \
-	split-window -f -v -l 5 \; \
-	set-option -p pane-border-format "input" \; \
-	split-window -f -v -l 1 "echo -n \"…\"" \; \
-	set-option -p pane-border-format "" \; \
-	set-option -p remain-on-exit-format "press [Ctrl+D] to exit, [Ctrl+<arrow>] to select panes, [Ctrl+Space] to toggle pane fullscreen" \; \
-	select-pane -t 4 \; \
+	select-pane -t 1 \; \

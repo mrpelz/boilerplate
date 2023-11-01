@@ -1,1 +1,1 @@
-../config/dev.sh
+../packages/boilerplate-common/config/dev.sh

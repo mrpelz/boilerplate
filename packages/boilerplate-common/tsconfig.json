@@ -2,6 +2,6 @@
   "compilerOptions": {
     "outDir": "dist",
   },
-  "extends": "@mrpelz/boilerplate-common/config/tsconfig.base.json",
+  "extends": "./config/tsconfig.base.json",
   "include": ["src/**/*"]
 }

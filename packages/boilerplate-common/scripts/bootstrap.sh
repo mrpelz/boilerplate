@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 ## ENVIRONMENT
+
 OVERRIDE=$1
 
-BOILERPLATE_MODULE_IDENTIFIER="@mrpelz/boilerplate"
+BOILERPLATE_MODULE_IDENTIFIER="@mrpelz/boilerplate-common"
 
 BOILERPLATE_MODULE_NAME=$BOILERPLATE_MODULE_IDENTIFIER
 BOILERPLATE_MODULE_PATH="$(realpath --relative-to=. "$(npm root)")/$BOILERPLATE_MODULE_IDENTIFIER/"
@@ -13,7 +14,7 @@ FORMAT_NORMAL=$(tput sgr0)
 
 ## UTILS
 
-check_response () {
+check_response() {
 	local CHECK_PROMPT=$1
 	local DEFAULT_RESPONSE=$2
 
@@ -22,16 +23,16 @@ check_response () {
 	local CHECK_SUFFIX
 
 	case $DEFAULT_RESPONSE in
-		y|Y ) CHECK_SUFFIX="[Y/n]";;
-		n|N ) CHECK_SUFFIX="[y/N]";;
-		* ) CHECK_SUFFIX="[y/n]";;
+	y | Y) CHECK_SUFFIX="[Y/n]" ;;
+	n | N) CHECK_SUFFIX="[y/N]" ;;
+	*) CHECK_SUFFIX="[y/n]" ;;
 	esac
 
 	case $OVERRIDE in
-		y|Y ) CHOICE=y;;
-		n|N ) CHOICE=n;;
-		d|D ) CHOICE=$DEFAULT_RESPONSE;;
-		* ) read -r -p "❔ $CHECK_SUFFIX " CHOICE;;
+	y | Y) CHOICE=y ;;
+	n | N) CHOICE=n ;;
+	d | D) CHOICE=$DEFAULT_RESPONSE ;;
+	*) read -r -p "❔ $CHECK_SUFFIX " CHOICE ;;
 	esac
 
 	if [[ -z "$CHOICE" ]]; then
@@ -41,23 +42,23 @@ check_response () {
 	echo "❗ $CHOICE"
 
 	case "$CHOICE" in
-		y|Y ) return 0;;
-		n|N ) return 1;;
-		* ) return 1;;
+	y | Y) return 0 ;;
+	n | N) return 1 ;;
+	*) return 1 ;;
 	esac
 }
 
-check_command () {
+check_command() {
 	local COMMAND=$1
 
-	if command -v "$COMMAND" &> /dev/null; then
+	if command -v "$COMMAND" &>/dev/null; then
 		return 0
 	fi
 
 	return 1
 }
 
-check_non_existent () {
+check_non_existent() {
 	local FILE_PATH=$1
 	local OVERRIDE_PROMPT=$2
 
@@ -74,7 +75,7 @@ check_non_existent () {
 	return 0
 }
 
-display () {
+display() {
 	local CONTENT=$1
 	local SYNTAX=$2
 
@@ -85,7 +86,7 @@ display () {
 	fi
 }
 
-make_ln () {
+make_ln() {
 	local TARGET_PATH=$1
 	local LINK_PATH=$2
 
@@ -107,7 +108,7 @@ make_ln () {
 	fi
 }
 
-make_config () {
+make_config() {
 	local FILE_PATH=$1
 	local FILE_CONTENT=$2
 
@@ -128,13 +129,13 @@ make_config () {
 
 	if check_non_existent "$FILE_PATH" "🪠 overwrite with new contents?"; then
 		mkdir -p "$FILE_DIR"
-		echo "$FILE_CONTENT" > "$FILE_PATH"
+		echo "$FILE_CONTENT" >"$FILE_PATH"
 	fi
 }
 
 ## FLOW
 
-if [[ "$(npm pkg get name)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]]; then
+if [[ "$(npm pkg get name | head -n 1)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]]; then
 	echo "📍 running within \"$BOILERPLATE_MODULE_IDENTIFIER\""
 
 	BOILERPLATE_MODULE_NAME="."
@@ -145,17 +146,17 @@ fi
 
 if ! check_command make; then
 	echo "❌ \"make\" is not available, aborting"
-  exit 1
+	exit 1
 fi
 
 if ! check_command sed; then
 	echo "❌ \"sed\" is not available, aborting"
-  exit 1
+	exit 1
 fi
 
 if ! check_command tmux; then
 	echo "❌ \"tmux\" is not available, aborting"
-  exit 1
+	exit 1
 fi
 
 if check_response "🖇 install symbolic links referencing files in boilerplate?" y; then
@@ -170,48 +171,54 @@ fi
 
 if check_response "📃 install bare config files extending base files in boilerplate?" y; then
 
-# no indent
-make_config .gitignore "$(cat << EOF
+	# no indent
+	make_config .gitignore "$(
+		cat <<EOF
 .DS_Store
 dist
 node_modules
 secrets.txt
 EOF
-)"
+	)"
 
-make_config Makefile "$(cat << EOF
+	make_config Makefile "$(
+		cat <<EOF
 include ${BOILERPLATE_MODULE_PATH}config/Makefile
 EOF
-)"
+	)"
 
-make_config commitlint.config.js "$(cat << EOF
+	make_config commitlint.config.js "$(
+		cat <<EOF
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/commitlint.config.js';
 
 /** @type {import('@commitlint/types').UserConfig} */
 export default config;
 EOF
-)"
+	)"
 
-make_config eslint.config.js "$(cat << EOF
+	make_config eslint.config.js "$(
+		cat <<EOF
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/eslint.config.js';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default config;
 EOF
-)"
+	)"
 
-make_config jest.config.js "$(cat << EOF
+	make_config jest.config.js "$(
+		cat <<EOF
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/config/jest.config.js';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default config;
 EOF
-)"
+	)"
 
-make_config tsconfig.json "$(cat << EOF
+	make_config tsconfig.json "$(
+		cat <<EOF
 {
   "compilerOptions": {
     "outDir": "dist",
@@ -220,9 +227,10 @@ make_config tsconfig.json "$(cat << EOF
   "include": ["src/**/*"]
 }
 EOF
-)"
+	)"
 
-make_config tsconfig.build.json "$(cat << EOF
+	make_config tsconfig.build.json "$(
+		cat <<EOF
 {
   "compilerOptions": {
     "noEmit": false
@@ -232,27 +240,30 @@ make_config tsconfig.build.json "$(cat << EOF
   "include": ["src/**/*"]
 }
 EOF
-)"
+	)"
 
-make_config tsconfig.meta.json "$(cat << EOF
+	make_config tsconfig.meta.json "$(
+		cat <<EOF
 {
   "exclude": ["dist/**/*", "node_modules/**/*", "src/**/*"],
   "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.meta.json",
   "include": ["**/*.js"]
 }
 EOF
-)"
+	)"
 
-make_config .gitlab-ci.yml "$(if [[ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]]; then cat << EOF
+	make_config .gitlab-ci.yml "$(if [[ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]]; then
+		cat <<EOF
 include:
   - project: "mrpelz/boilerplate"
     ref: main
     file: "/gitlab/.gitlab-ci.yml"
 EOF
-else cat << EOF
+	else
+		cat <<EOF
 include: "/gitlab/.gitlab-ci.yml"
 EOF
-fi)"
+	fi)"
 fi
 
 if check_response "💱 apply changes to \"package.json\"?" y; then
@@ -264,27 +275,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"module=dist/main.js" \
 		"types=dist/main.d.ts" \
 		"files[0]=dist/**/*.{js,map,ts}" \
-		"devDependencies.@commitlint/cli=latest" \
-		"devDependencies.@commitlint/config-conventional=latest" \
-		"devDependencies.@commitlint/types=latest" \
-		"devDependencies.@jest/globals=latest" \
-		"devDependencies.@types/eslint=latest" \
-		"devDependencies.@typescript-eslint/eslint-plugin=latest" \
-		"devDependencies.@typescript-eslint/parser=latest" \
-		"devDependencies.@typescript-eslint/types=latest" \
-		"devDependencies.chokidar-cli=latest" \
-		"devDependencies.eslint=latest" \
-		"devDependencies.eslint-import-resolver-typescript=latest" \
-		"devDependencies.eslint-plugin-import=latest" \
-		"devDependencies.eslint-plugin-prettier=latest" \
-		"devDependencies.eslint-plugin-simple-import-sort=latest" \
-		"devDependencies.eslint-plugin-unicorn=latest" \
-		"devDependencies.husky=latest" \
-		"devDependencies.jest=latest" \
-		"devDependencies.prettier=latest" \
-		"devDependencies.sort-package-json=latest" \
-		"devDependencies.ts-jest=latest" \
-		"devDependencies.typescript=latest"
+		"devDependencies.@mrpelz/boilerplate-common=latest"
 fi
 
 if check_response "🕳 run npm install?" y; then
