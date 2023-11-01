@@ -79,6 +79,9 @@ util_clear:
 util_install_git_hooks:
 	husky install
 
+util_get_version:
+	@echo $(PKG_VERSION)
+
 watch:
 	scripts/watch.sh
 
