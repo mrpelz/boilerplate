@@ -1,9 +1,10 @@
 {
-  "name": "@mrpelz/boilerplate",
+  "name": "@mrpelz/boilerplate-node",
   "version": "6.3.2",
   "repository": {
     "type": "git",
-    "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git"
+    "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git",
+    "directory": "packages/boilerplate-node"
   },
   "license": "UNLICENSED",
   "author": "Lennart Pelz <mail@mrpelz.de>",
@@ -14,11 +15,8 @@
   "files": [
     "dist/**/*.{js,map,ts}"
   ],
-  "workspaces": [
-    "packages/boilerplate-common",
-    "packages/boilerplate-node"
-  ],
-  "devDependencies": {
-    "@mrpelz/boilerplate-common": "latest"
+  "dependencies": {
+    "@mrpelz/boilerplate-common": "latest",
+    "@types/node": "latest"
   }
 }
