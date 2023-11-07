@@ -40,6 +40,7 @@ tag:prerelease:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version prerelease --workspaces --include-workspace-root --git-tag-version=false --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -51,6 +52,7 @@ tag:patch:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version patch --workspaces --include-workspace-root --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -63,6 +65,7 @@ tag:minor:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version minor --workspaces --include-workspace-root --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -75,6 +78,7 @@ tag:major:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version major --workspaces --include-workspace-root --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -86,10 +90,12 @@ publish:gitlab:
   script:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm publish --workspaces
 
 publish:npm:
   script:
     - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
     - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm publish --workspaces --access public
