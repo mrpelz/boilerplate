@@ -118,6 +118,7 @@ tag:prerelease:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version prerelease --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git push gitlab_origin --tags
 
@@ -131,6 +132,7 @@ tag:patch:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version patch
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
@@ -145,6 +147,7 @@ tag:minor:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version minor
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
@@ -159,6 +162,7 @@ tag:major:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version major
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
@@ -170,6 +174,7 @@ publish:gitlab:
   script:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm publish
 
 publish:npm:
@@ -181,5 +186,6 @@ publish:npm:
       when: manual
   script:
     - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
     - npm publish --access public
