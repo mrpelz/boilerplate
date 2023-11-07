@@ -40,6 +40,7 @@ tag:prerelease:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version prerelease --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -51,6 +52,7 @@ tag:patch:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version patch --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -63,6 +65,7 @@ tag:minor:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version minor --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"
@@ -75,6 +78,7 @@ tag:major:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version major --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false
     - git add --all .
     - git commit -m "$(make -s util_get_version 2>/dev/null)"

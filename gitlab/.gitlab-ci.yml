@@ -118,6 +118,7 @@ tag:prerelease:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version prerelease --audit=false --fund=false --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
     - git push gitlab_origin --tags
 
@@ -131,6 +132,7 @@ tag:patch:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version patch --audit=false --fund=false
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
@@ -145,6 +147,7 @@ tag:minor:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version minor --audit=false --fund=false
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
@@ -159,6 +162,7 @@ tag:major:
     - git config user.email "${CI_BOT_EMAIL}"
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm version major --audit=false --fund=false
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
