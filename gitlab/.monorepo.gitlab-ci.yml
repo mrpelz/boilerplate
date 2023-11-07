@@ -96,6 +96,6 @@ publish:gitlab:
 publish:npm:
   script:
     - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
-    - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
     - npm publish --workspaces --access public
