@@ -61,9 +61,3 @@ publish:gitlab:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
     - npm publish --workspaces
-
-publish:npm:
-  script:
-    - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
-    - npm pkg set "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
-    - npm publish --workspaces --access public

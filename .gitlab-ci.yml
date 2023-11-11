@@ -1,2 +1,8 @@
 # include: "/gitlab/.gitlab-ci.yml"
 include: "/gitlab/.monorepo.gitlab-ci.yml"
+
+publish:npm:
+  script:
+    - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
+    - npm pkg set --workspaces "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
+    - npm publish --workspaces --access public
