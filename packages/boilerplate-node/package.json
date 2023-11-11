@@ -1,6 +1,6 @@
 {
   "name": "@mrpelz/boilerplate-node",
-  "version": "7.0.0",
+  "version": "7.0.1-makefile-sub-packages-51535531.0",
   "repository": {
     "type": "git",
     "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git",
