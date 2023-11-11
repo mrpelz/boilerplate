@@ -462,7 +462,7 @@ export const plugins = {
 /** @type {import('eslint').Linter.FlatConfig} */
 export const configMeta = {
   files: ['**/*.js'],
-  ignores: ['dist/**/*', 'node_modules/**/*', 'src/**/*'],
+  ignores: ['dist/**/*', 'node_modules/**/*', 'src/**/*', 'packages/**/*'],
   languageOptions: {
     parser: typescriptParser,
     parserOptions: {
