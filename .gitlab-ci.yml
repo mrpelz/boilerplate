@@ -1,1 +1,2 @@
+# include: "/gitlab/.gitlab-ci.yml"
 include: "/gitlab/.monorepo.gitlab-ci.yml"

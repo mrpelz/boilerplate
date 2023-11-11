@@ -258,10 +258,12 @@ include:
   - project: "mrpelz/boilerplate"
     ref: main
     file: "/gitlab/.gitlab-ci.yml"
+		# file: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
 	else
 		cat <<EOF
 include: "/gitlab/.gitlab-ci.yml"
+# include: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
 	fi)"
 fi

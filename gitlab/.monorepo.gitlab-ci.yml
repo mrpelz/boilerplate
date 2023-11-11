@@ -5,36 +5,6 @@ npm install:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm ci --workspaces --include-workspace-root --audit=false --fund=false
 
-check_package_json:
-  script:
-    - make -s check_package_json
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" check_package_json "$PACKAGE"; done
-
-check_lint:
-  script:
-    - make -s check_lint
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" check_lint; done
-
-check_config:
-  script:
-    - make -s check_config
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" check_config; done
-
-check_typescript:
-  script:
-    - make -s check_typescript
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" check_typescript; done
-
-check_test:
-  script:
-    - make -s check_test
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" check_test; done
-
-transform_prod:
-  script:
-    - make -s transform_prod
-    - for PACKAGE in packages/*; do make -s -C "$PACKAGE" transform_prod; done
-
 tag:prerelease:
   script:
     - git config user.email "${CI_BOT_EMAIL}"
