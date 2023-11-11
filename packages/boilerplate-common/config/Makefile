@@ -91,9 +91,13 @@ check_commit:
 	commitlint --verbose --from HEAD~1 --to HEAD
 
 check_config:
+	$(SUB_RUN)
+
 	tsc --project tsconfig.meta.json
 
 check_lint:
+	$(SUB_RUN)
+
 	eslint $(ESLINT_ARGS) .
 
 check_package_json: \
@@ -153,6 +157,8 @@ check_package_json_sort:
 	sort-package-json --check
 
 check_package_json_version:
+	$(SUB_RUN)
+
 	if [[ -z "$(GIT_VERSION)" ]]; then \
 		echo "cannot determine git repository version, skipping"; \
 		exit 0; \
