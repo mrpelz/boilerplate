@@ -88,7 +88,7 @@ check: \
 	check_test
 
 check_commit:
-	commitlint --verbose --from HEAD~1 --to HEAD
+	commitlint --verbose --config commitlint.config.mjs --from HEAD~1 --to HEAD
 
 check_config:
 	$(SUB_RUN)

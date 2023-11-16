@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-node_modules/.bin/commitlint --verbose --edit
+node_modules/.bin/commitlint --verbose --config commitlint.config.mjs --edit

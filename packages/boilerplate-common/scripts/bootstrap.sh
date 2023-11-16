@@ -187,10 +187,10 @@ include ${BOILERPLATE_MODULE_PATH}config/Makefile
 EOF
 	)"
 
-	make_config commitlint.config.js "$(
+	make_config commitlint.config.mjs "$(
 		cat <<EOF
 // @ts-ignore
-import config from '$BOILERPLATE_MODULE_NAME/config/commitlint.config.js';
+import config from '$BOILERPLATE_MODULE_NAME/config/commitlint.config.mjs';
 
 /** @type {import('@commitlint/types').UserConfig} */
 export default config;
@@ -245,7 +245,7 @@ EOF
 	make_config tsconfig.meta.json "$(
 		cat <<EOF
 {
-  "exclude": ["dist/**/*", "node_modules/**/*", "src/**/*"],
+  "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.meta.json",
   "include": ["**/*.js"]
 }
@@ -258,7 +258,7 @@ include:
   - project: "mrpelz/boilerplate"
     ref: main
     file: "/gitlab/.gitlab-ci.yml"
-		# file: "/gitlab/.monorepo.gitlab-ci.yml"
+    # file: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
 	else
 		cat <<EOF
