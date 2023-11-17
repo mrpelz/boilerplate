@@ -247,7 +247,7 @@ EOF
 {
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.meta.json",
-  "include": ["**/*.js"]
+  "include": ["**/*.js", "**/*.mjs"]
 }
 EOF
 	)"
@@ -276,8 +276,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"main=dist/main.js" \
 		"module=dist/main.js" \
 		"types=dist/main.d.ts" \
-		"files[0]=dist/**/*.{js,map,ts}" \
-		"devDependencies.@mrpelz/boilerplate-common=latest"
+		"files[0]=dist/**/*.{js,map,ts}"
 fi
 
 if check_response "🕳 run npm install?" y; then

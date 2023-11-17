@@ -1,4 +1,0 @@
-include:
-  - project: "mrpelz/boilerplate"
-    ref: main
-    file: "/gitlab/.gitlab-ci.yml"
