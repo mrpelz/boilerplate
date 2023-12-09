@@ -2,7 +2,7 @@
 
 tmux \
 	new-session "make -s watch_lint" \; \
-	bind-key -n C-d "set-option -w remain-on-exit off; set-option -w synchronize-panes on; send-keys C-c; kill-pane; kill-pane" \; \
+	bind-key -n C-d run-shell "tmux list-panes -s -F \"#{l:#{pane_pid}}\" -f \"#{l:#{pane_start_command}}\" | xargs kill; tmux kill-session" \; \
 	bind-key -n C-Down "select-pane -D" \; \
 	bind-key -n C-Left "select-pane -L" \; \
 	bind-key -n C-Right "select-pane -R" \; \
