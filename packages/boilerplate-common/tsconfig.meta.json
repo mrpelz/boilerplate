@@ -1,5 +1,11 @@
 {
+  "compilerOptions": {
+    "incremental": false,
+    "moduleResolution": "Node",
+    "module": "None",
+    "skipLibCheck": true,
+  },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
-  "extends": "./config/tsconfig.meta.json",
+  "extends": "./tsconfig.json",
   "include": ["**/*.js", "**/*.mjs"]
 }

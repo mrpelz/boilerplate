@@ -1,1 +1,10 @@
-../config/.vscode/extensions.json
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "meganrogge.template-string-converter",
+    "ms-vscode.makefile-tools",
+    "nhoizey.gremlins",
+    "yoavbls.pretty-ts-errors"
+  ]
+}

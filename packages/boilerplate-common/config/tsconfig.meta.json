@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "incremental": false,
-    "moduleResolution": "Node",
-    "module": "None",
-    "skipLibCheck": true,
-  },
-  "extends": "./tsconfig.base.json",
-}

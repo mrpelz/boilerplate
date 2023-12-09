@@ -1,5 +1,10 @@
-// @ts-ignore
-import config from './config/jest.config.js';
-
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-export default config;
+export default {
+  moduleNameMapper: {
+    '^(\\./.+)\\.m?js$': '$1',
+  },
+  passWithNoTests: true,
+  preset: 'ts-jest/presets/js-with-ts-esm',
+  roots: ['src'],
+  testEnvironment: 'node',
+};

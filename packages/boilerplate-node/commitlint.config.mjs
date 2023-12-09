@@ -1,5 +1,5 @@
 // @ts-ignore
-import config from './config/commitlint.config.js';
+import config from '@mrpelz/boilerplate-common/commitlint.config.mjs';
 
 /** @type {import('@commitlint/types').UserConfig} */
 export default config;

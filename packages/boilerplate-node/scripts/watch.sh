@@ -1,1 +1,1 @@
-../../boilerplate-common/config/watch.sh
+../../boilerplate-common/scripts/watch.sh
