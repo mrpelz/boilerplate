@@ -4,10 +4,8 @@
 
 OVERRIDE=$1
 
-BOILERPLATE_MODULE_IDENTIFIER="@mrpelz/boilerplate-common"
-
-BOILERPLATE_MODULE_NAME=$BOILERPLATE_MODULE_IDENTIFIER
-BOILERPLATE_MODULE_PATH="$(realpath --relative-to=. "$(npm root)")/$BOILERPLATE_MODULE_IDENTIFIER/"
+BOILERPLATE_MODULE_NAME="@mrpelz/boilerplate-common"
+BOILERPLATE_MODULE_PATH="$(realpath --relative-to=. "$(npm ls --parseable --silent "$BOILERPLATE_MODULE_NAME" 2>/dev/null)")"
 
 FORMAT_BOLD=$(tput bold)
 FORMAT_NORMAL=$(tput sgr0)
@@ -135,102 +133,95 @@ make_config() {
 
 ## FLOW
 
-if [[ "$(npm pkg get name | head -n 1)" == "\"$BOILERPLATE_MODULE_IDENTIFIER\"" ]]; then
-	echo "📍 running within \"$BOILERPLATE_MODULE_IDENTIFIER\""
+for COMMAND in make head sed tmux xargs; do
+	if ! check_command "$COMMAND"; then
+		echo "❌ \"$COMMAND\" is not available, aborting"
+		exit 1
+	fi
+done
 
-	BOILERPLATE_MODULE_NAME="."
-	BOILERPLATE_MODULE_PATH="./"
+if [[ "$(npm pkg get --workspaces=false name)" == "\"$BOILERPLATE_MODULE_NAME\"" ]]; then
+	echo "📍 running within \"$BOILERPLATE_MODULE_NAME\""
+	SKIP_FILES=1
 else
-	echo "ℹ️ running with \"$BOILERPLATE_MODULE_IDENTIFIER\" as dependency"
+	echo "ℹ️ running with \"$BOILERPLATE_MODULE_NAME\" as dependency"
 fi
 
-if ! check_command make; then
-	echo "❌ \"make\" is not available, aborting"
-	exit 1
-fi
+if [[ $SKIP_FILES -ne 1 ]]; then
+	if check_response "🖇 install symbolic links referencing files in boilerplate?" y; then
+		make_ln "${BOILERPLATE_MODULE_PATH}/.editorconfig" .editorconfig
 
-if ! check_command sed; then
-	echo "❌ \"sed\" is not available, aborting"
-	exit 1
-fi
+		make_ln "${BOILERPLATE_MODULE_PATH}/.vscode/extensions.json" .vscode/extensions.json
+		make_ln "${BOILERPLATE_MODULE_PATH}/.vscode/settings.json" .vscode/settings.json
 
-if ! check_command tmux; then
-	echo "❌ \"tmux\" is not available, aborting"
-	exit 1
-fi
+		make_ln "${BOILERPLATE_MODULE_PATH}/scripts/watch.sh" scripts/watch.sh
+		make_ln "${BOILERPLATE_MODULE_PATH}/scripts/dev.sh" scripts/dev.sh
+	fi
 
-if check_response "🖇 install symbolic links referencing files in boilerplate?" y; then
-	make_ln "${BOILERPLATE_MODULE_PATH}config/.editorconfig" .editorconfig
+	if check_response "📃 install bare config files extending base files in boilerplate?" y; then
 
-	make_ln "${BOILERPLATE_MODULE_PATH}config/.vscode/extensions.json" .vscode/extensions.json
-	make_ln "${BOILERPLATE_MODULE_PATH}config/.vscode/settings.json" .vscode/settings.json
-
-	make_ln "${BOILERPLATE_MODULE_PATH}config/watch.sh" scripts/watch.sh
-	make_ln "${BOILERPLATE_MODULE_PATH}config/dev.sh" scripts/dev.sh
-fi
-
-if check_response "📃 install bare config files extending base files in boilerplate?" y; then
-
-	# no indent
-	make_config .gitignore "$(
-		cat <<EOF
+		# no indent
+		make_config .gitignore "$(
+			cat <<EOF
 .DS_Store
 dist
 node_modules
 secrets.txt
 EOF
-	)"
+		)"
 
-	make_config Makefile "$(
-		cat <<EOF
-include ${BOILERPLATE_MODULE_PATH}config/Makefile
+		make_config Makefile "$(
+			cat <<EOF
+BASE_FILE := \$(shell npm ls --parseable --silent "$BOILERPLATE_MODULE_NAME" 2>/dev/null)
+
+include \$(BASE_FILE)/Makefile
 EOF
-	)"
+		)"
 
-	make_config commitlint.config.mjs "$(
-		cat <<EOF
+		make_config commitlint.config.mjs "$(
+			cat <<EOF
 // @ts-ignore
-import config from '$BOILERPLATE_MODULE_NAME/config/commitlint.config.mjs';
+import config from '$BOILERPLATE_MODULE_NAME/commitlint.config.mjs';
 
 /** @type {import('@commitlint/types').UserConfig} */
 export default config;
 EOF
-	)"
+		)"
 
-	make_config eslint.config.js "$(
-		cat <<EOF
+		make_config eslint.config.js "$(
+			cat <<EOF
 // @ts-ignore
-import config from '$BOILERPLATE_MODULE_NAME/config/eslint.config.js';
+import config from '$BOILERPLATE_MODULE_NAME/eslint.config.js';
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default config;
 EOF
-	)"
+		)"
 
-	make_config jest.config.js "$(
-		cat <<EOF
+		make_config jest.config.js "$(
+			cat <<EOF
 // @ts-ignore
-import config from '$BOILERPLATE_MODULE_NAME/config/jest.config.js';
+import config from '$BOILERPLATE_MODULE_NAME/jest.config.js';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default config;
 EOF
-	)"
+		)"
 
-	make_config tsconfig.json "$(
-		cat <<EOF
+		make_config tsconfig.json "$(
+			cat <<EOF
 {
   "compilerOptions": {
     "outDir": "dist",
   },
-  "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.base.json",
+  "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.json",
   "include": ["src/**/*"]
 }
 EOF
-	)"
+		)"
 
-	make_config tsconfig.build.json "$(
-		cat <<EOF
+		make_config tsconfig.build.json "$(
+			cat <<EOF
 {
   "compilerOptions": {
     "noEmit": false
@@ -240,36 +231,37 @@ EOF
   "include": ["src/**/*"]
 }
 EOF
-	)"
+		)"
 
-	make_config tsconfig.meta.json "$(
-		cat <<EOF
+		make_config tsconfig.meta.json "$(
+			cat <<EOF
 {
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
-  "extends": "$BOILERPLATE_MODULE_NAME/config/tsconfig.meta.json",
+  "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.meta.json",
   "include": ["**/*.js", "**/*.mjs"]
 }
 EOF
-	)"
+		)"
 
-	make_config .gitlab-ci.yml "$(if [[ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_IDENTIFIER" ]]; then
-		cat <<EOF
+		make_config .gitlab-ci.yml "$(if [[ "$BOILERPLATE_MODULE_NAME" == "$BOILERPLATE_MODULE_NAME" ]]; then
+			cat <<EOF
 include:
-  - project: "mrpelz/boilerplate"
-    ref: main
-    file: "/gitlab/.gitlab-ci.yml"
-    # file: "/gitlab/.monorepo.gitlab-ci.yml"
+	- project: "mrpelz/boilerplate"
+		ref: main
+		file: "/gitlab/.gitlab-ci.yml"
+		# file: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
-	else
-		cat <<EOF
+		else
+			cat <<EOF
 include: "/gitlab/.gitlab-ci.yml"
 # include: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
-	fi)"
+		fi)"
+	fi
 fi
 
 if check_response "💱 apply changes to \"package.json\"?" y; then
-	npm pkg set \
+	npm pkg set --workspaces=false \
 		"license=UNLICENSED" \
 		"author=Lennart Pelz <mail@mrpelz.de>" \
 		"type=module" \
@@ -294,7 +286,9 @@ fi
 if check_command git; then
 	if [[ -d ".git" ]]; then
 		if check_response "🪝 install git hooks?" y; then
-			make_ln "${BOILERPLATE_MODULE_PATH}config/.husky/commit-msg" .husky/commit-msg
+			if [[ $SKIP_FILES -ne 1 ]]; then
+				make_ln "${BOILERPLATE_MODULE_PATH}/.husky/commit-msg" .husky/commit-msg
+			fi
 			make util_install_git_hooks
 		fi
 	else

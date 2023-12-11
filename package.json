@@ -19,6 +19,6 @@
     "packages/boilerplate-node"
   ],
   "devDependencies": {
-    "@mrpelz/boilerplate-common": "latest"
+    "@mrpelz/boilerplate-common": "*"
   }
 }

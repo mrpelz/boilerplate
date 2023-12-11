@@ -1,1 +1,1 @@
-../../boilerplate-common/config/dev.sh
+../../boilerplate-common/scripts/dev.sh

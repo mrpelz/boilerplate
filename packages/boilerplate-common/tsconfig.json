@@ -1,7 +1,24 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "allowJs": true,
+    "alwaysStrict": true,
+    "checkJs": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": true,
+    "lib": [
+      "ESNext"
+    ],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true
   },
-  "extends": "./config/tsconfig.base.json",
   "include": ["src/**/*"]
 }
