@@ -12,6 +12,9 @@
   "main": "dist/main.js",
   "module": "dist/main.js",
   "types": "dist/main.d.ts",
+  "bin": {
+    "boilerplate-node-bootstrap": "scripts/bootstrap.sh"
+  },
   "files": [
     "dist/**/*.{js,map,ts}",
     "commitlint.config.mjs",
