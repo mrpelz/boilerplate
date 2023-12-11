@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+## ENVIRONMENT
 
 BOILERPLATE_MODULE_NAME="@mrpelz/boilerplate-common"
 BOILERPLATE_MODULE_PATH="$(realpath --relative-to=. "$(npm ls --parseable --silent "$BOILERPLATE_MODULE_NAME" 2>/dev/null)")"
