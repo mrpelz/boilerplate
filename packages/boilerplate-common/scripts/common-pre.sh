@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for COMMAND in make head sed tmux xargs; do
+for COMMAND in make head pidwait sed tmux xargs; do
 	if ! check_command "$COMMAND"; then
 		echo "❌ \"$COMMAND\" is not available, aborting"
 		exit 1
