@@ -23,3 +23,5 @@ tmux \
 	set-option -p pane-border-format "tsc (tsconfig.meta.json, checks files outside \"src\")" \; \
 	split-window -f -v -l 33% "make -s watch_run" \; \
 	set-option -p pane-border-format "node (\"dist/main.js\")" \; \
+	split-window -f -v -l 5 \; \
+	set-option -p pane-border-format "input" \; \

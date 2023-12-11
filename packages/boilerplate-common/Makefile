@@ -66,6 +66,8 @@ SUB_RUN = \
 	\
 	echo "parent:$(@)";
 
+ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+
 PKG_NAME := $(shell npm pkg get --workspaces=false name 2>/dev/null | sed -nr 's/^"@(.+)"$$/\1/p' 2>/dev/null)
 GIT_NAME := $(shell git remote get-url origin 2>/dev/null | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p' 2>/dev/null)
 
@@ -248,7 +250,8 @@ util_edit:
 util_get_package_json:
 	$(SUB_RUN)
 
-	npm pkg get --workspaces=false
+	source "$(ROOT_DIR)/scripts/utils.sh"; \
+	display "$$(npm pkg get --workspaces=false)" "json";
 
 util_get_version:
 	@echo $(PKG_VERSION)
@@ -263,11 +266,12 @@ watch_config:
 	tsc --project tsconfig.meta.json --watch
 
 watch_dev:
-	scripts/dev.sh
+	scripts/watch-dev.sh
 
 watch_lint:
-	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/**/*" --ignore "node_modules/**/*" --ignore "*.d.ts" \
-		--command "clear; eslint --ignore-pattern \"dist/**/*\" --ignore-pattern \"node_modules/**/*\" --ignore-pattern \"$(SUB_PACKAGE_DIR)/**/*\" .; echo \"[waiting for changes…]\""
+	nodemon --watch "**/*" --watch "src/**/*" --ignore "dist/**/*" --ignore "node_modules/**/*" --ignore "*.d.ts" --ext "js,mjs,ts" \
+		--exec 'eslint $(ESLINT_ARGS) .'; \
+	exit 0;
 
 watch_test:
 	jest --watch .
