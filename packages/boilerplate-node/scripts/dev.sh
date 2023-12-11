@@ -1,1 +1,0 @@
-../../boilerplate-common/scripts/dev.sh

@@ -263,7 +263,7 @@ watch_config:
 	tsc --project tsconfig.meta.json --watch
 
 watch_dev:
-	scripts/dev.sh
+	scripts/watch-dev.sh
 
 watch_lint:
 	chokidar --initial "**/*.js" "src/**/*.{js,ts}" --ignore "dist/**/*" --ignore "node_modules/**/*" --ignore "*.d.ts" \
