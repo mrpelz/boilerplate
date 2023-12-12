@@ -34,6 +34,8 @@
 	watch_test \
 	watch_typescript
 
+.DEFAULT_GOAL := help
+
 SHELL := /usr/bin/env bash
 
 ARGS := $(filter-out $(firstword $(MAKECMDGOALS)),$(MAKECMDGOALS))
@@ -60,7 +62,7 @@ SUB_RUN = \
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
 		echo "$$SUB_PACKAGE:$(@)"; \
 		\
-		$(MAKE) "$(@)" sub_package="$$SUB_PACKAGE" -C "$$SUB_PACKAGE" || exit "$$?"; \
+		$(MAKE) "$(@)" sub_package="$$SUB_PACKAGE" -s -C "$$SUB_PACKAGE" || exit "$$?"; \
 		echo; \
 	done; \
 	\

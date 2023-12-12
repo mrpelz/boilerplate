@@ -9,9 +9,9 @@ tmux \
 	bind-key -n C-Space "resize-pane -Z" \; \
 	bind-key -n C-Up "select-pane -U" \; \
 	set-option -w mouse on \; \
-	set-option -w pane-active-border-style bold,fg=black,bg=white \; \
+	set-option -w pane-active-border-style bold \; \
 	set-option -w pane-border-status top \; \
-	set-option -w pane-border-style bold,fg=white \; \
+	set-option -w pane-border-style fg=default \; \
 	set-option -w remain-on-exit on \; \
 	set-option -w status off \; \
 	set-option -p pane-border-format "eslint (eslint.config.json, includes files outside \"src\")" \; \
