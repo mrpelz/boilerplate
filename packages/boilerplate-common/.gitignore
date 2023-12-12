@@ -1,4 +1,5 @@
 .DS_Store
+*.tsbuildinfo
 dist
 node_modules
 secrets.txt
