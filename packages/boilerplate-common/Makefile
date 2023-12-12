@@ -12,6 +12,7 @@
 	check_package_json_version \
 	check_test \
 	check_typescript \
+	help \
 	transform \
 	transform_clear \
 	transform_lint \
@@ -27,6 +28,7 @@
 	util_get_package_json \
 	util_get_version \
 	util_install_git_hooks \
+	util_list_targets \
 	watch \
 	watch_config \
 	watch_dev \
@@ -34,9 +36,13 @@
 	watch_test \
 	watch_typescript
 
+.DEFAULT_GOAL := help
+
 SHELL := /usr/bin/env bash
 
 ARGS := $(filter-out $(firstword $(MAKECMDGOALS)),$(MAKECMDGOALS))
+
+TARGETS := sed -nr 's/^(\w+):.*$$/\1/p' $(MAKEFILE_LIST) | sort -u
 
 export PATH := $(shell npm root)/.bin:$(PATH)
 
@@ -60,7 +66,7 @@ SUB_RUN = \
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
 		echo "$$SUB_PACKAGE:$(@)"; \
 		\
-		$(MAKE) "$(@)" sub_package="$$SUB_PACKAGE" -C "$$SUB_PACKAGE" || exit "$$?"; \
+		$(MAKE) "$(@)" sub_package="$$SUB_PACKAGE" -s -C "$$SUB_PACKAGE" || exit "$$?"; \
 		echo; \
 	done; \
 	\
@@ -184,6 +190,11 @@ check_typescript:
 
 	tsc
 
+help:
+	@echo -e "Usage: make <target>\nSelect from these targets:\n"
+
+	$(TARGETS)
+
 transform: \
 	transform_package_json \
 	transform_lint \
@@ -258,6 +269,9 @@ util_get_version:
 
 util_install_git_hooks:
 	husky install
+
+util_list_targets:
+	$(TARGETS)
 
 watch:
 	scripts/watch.sh

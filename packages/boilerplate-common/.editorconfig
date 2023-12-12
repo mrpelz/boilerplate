@@ -8,8 +8,11 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.sh]
-indent_style = tab
+[*.md]
+trim_trailing_whitespace = false
 
 [{Makefile,*.mk}]
+indent_style = tab
+
+[*.sh]
 indent_style = tab

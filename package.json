@@ -1,6 +1,7 @@
 {
   "name": "@mrpelz/boilerplate",
   "version": "8.2.1",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git"
