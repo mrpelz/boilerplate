@@ -135,7 +135,7 @@ make <target>
 > **ℹ️ Good to know II**  
 > For the purpose of this ReadMe, “meta file” means a file that is related to the tooling itself (e.g. configuring `eslint`) and is not part of the application’s source code.
 
-> **ℹ️ Good to know III**
+> **ℹ️ Good to know III**  
 > The boilerplate tries to handle “monorepos”.  
 > For the purpose of this ReadMe, “root package” is the package that contains NPM workspaces and the packages within those workspaces are called “sub packages”.
 >
