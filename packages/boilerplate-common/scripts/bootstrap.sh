@@ -113,10 +113,10 @@ EOF
 		make_config .gitlab-ci.yml "$(
 			cat <<EOF
 include:
-	- project: "mrpelz/boilerplate"
-		ref: main
-		file: "/gitlab/.gitlab-ci.yml"
-		# file: "/gitlab/.monorepo.gitlab-ci.yml"
+  - project: "mrpelz/boilerplate"
+    ref: main
+    file: "/gitlab/.gitlab-ci.yml"
+    # file: "/gitlab/.monorepo.gitlab-ci.yml"
 EOF
 		)"
 	fi
