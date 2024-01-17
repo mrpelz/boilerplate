@@ -13,7 +13,7 @@
 	check_test \
 	check_typescript \
 	transform \
-	transform_clear \
+	transform_build \
 	transform_lint \
 	transform_package_json \
 	transform_package_json_fix \
@@ -21,18 +21,17 @@
 	transform_package_json_sort \
 	transform_package_json_version \
 	transform_prod \
-	transform_typescript \
 	util_clear \
 	util_edit \
 	util_get_package_json \
 	util_get_version \
 	util_install_git_hooks \
 	watch \
+	watch_build \
 	watch_config \
 	watch_dev \
 	watch_lint \
-	watch_test \
-	watch_typescript
+	watch_test
 
 SHELL := /usr/bin/env bash
 
@@ -187,11 +186,12 @@ check_typescript:
 transform: \
 	transform_package_json \
 	transform_lint \
-	transform_typescript
+	transform_build
 
-transform_clear: \
-	util_clear \
-	transform
+transform_build:
+	$(SUB_RUN)
+
+	tsc --project tsconfig.build.json
 
 transform_lint:
 	$(SUB_RUN)
@@ -230,12 +230,7 @@ transform_package_json_version:
 
 transform_prod: \
 	util_clear \
-	transform_typescript
-
-transform_typescript:
-	$(SUB_RUN)
-
-	tsc --project tsconfig.build.json
+	transform_build
 
 util_clear:
 	$(SUB_RUN)
@@ -262,6 +257,9 @@ util_install_git_hooks:
 watch:
 	scripts/watch.sh
 
+watch_build:
+	tsc --project tsconfig.build.json --watch
+
 watch_config:
 	tsc --project tsconfig.meta.json --watch
 
@@ -269,12 +267,9 @@ watch_dev:
 	scripts/watch-dev.sh
 
 watch_lint:
-	nodemon --watch "**/*" --watch "src/**/*" --ignore "dist/**/*" --ignore "node_modules/**/*" --ignore "*.d.ts" --ext "js,mjs,ts" \
-		--exec 'eslint $(ESLINT_ARGS) .'; \
+	nodemon --quiet --watch "**/*" --watch "src/**/*" --ignore "dist/**/*" --ignore "node_modules/**/*" --ignore "*.d.ts" --ext "js,mjs,ts" \
+		--exec 'clear; eslint $(ESLINT_ARGS) .'; \
 	exit 0;
 
 watch_test:
 	jest --watch .
-
-watch_typescript:
-	tsc --project tsconfig.build.json --watch

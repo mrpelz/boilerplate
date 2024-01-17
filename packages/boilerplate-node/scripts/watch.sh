@@ -17,7 +17,7 @@ tmux \
 	set-option -p pane-border-format "eslint (eslint.config.json, includes files outside \"src\")" \; \
 	split-window -h -l 50% "make -s watch_test" \; \
 	set-option -p pane-border-format "jest (jest.config.json)" \; \
-	split-window -f -v -l 50% "make -s watch_typescript" \; \
+	split-window -f -v -l 50% "make -s watch_build" \; \
 	set-option -p pane-border-format "tsc (tsconfig.build.json, excludes test-files)" \; \
 	split-window -h -l 50% "make -s watch_config" \; \
 	set-option -p pane-border-format "tsc (tsconfig.meta.json, checks files outside \"src\")" \; \
