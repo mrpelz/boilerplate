@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "ESNext"],
+    "outDir": "dist",
+  },
+  "extends": "@mrpelz/boilerplate-common/tsconfig.json",
+  "include": ["src/**/*"]
+}

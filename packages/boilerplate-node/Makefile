@@ -9,9 +9,11 @@ include $(BASE_FILE)/Makefile
 NODE := node --use_strict --enable-source-maps --stack-trace-limit=100 "dist/main.js"
 
 run:
+	$(SUB_RUN)
+
 	$(NODE)
 
 watch_run:
-	nodemon --watch "dist/**/*" --watch "node_modules/**/*" --ext "js,mjs" \
+	nodemon --quiet --watch "dist/**/*" --watch "node_modules/**/*" --ext "js,mjs" \
 		--exec '$(NODE)'; \
 	exit 0;
