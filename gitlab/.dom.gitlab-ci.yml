@@ -1,0 +1,15 @@
+check_stylelint:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - "src/**/*.css"
+        - "packages/*/src/**/*.css"
+        - "**/stylelint.config.js"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "src/**/*.css"
+        - "packages/*/src/**/*.css"
+        - "**/stylelint.config.js"
+  script:
+    - make -s -C "packages/boilerplate-dom" include_sub_packages="false" check_stylelint

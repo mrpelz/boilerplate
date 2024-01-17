@@ -1,5 +1,3 @@
-include: "/gitlab/.gitlab-ci.yml"
-
 npm install:
   script:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
