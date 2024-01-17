@@ -15,6 +15,7 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
+    "outDir": "dist",
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "ESNext",

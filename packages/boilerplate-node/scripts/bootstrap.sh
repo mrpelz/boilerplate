@@ -19,12 +19,12 @@ source "${SCRIPT_PATH}/common-pre.sh"
 
 if [[ $SKIP_FILES -ne 1 ]]; then
 	if check_response "🖇 install symbolic links referencing files in \"$BOILERPLATE_MODULE_NAME\" and \"$BOILERPLATE_NODE_MODULE_NAME\"?" y; then
-		make_ln "${BOILERPLATE_MODULE_PATH}/.editorconfig" .editorconfig
+		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/.editorconfig" .editorconfig
 
-		make_ln "${BOILERPLATE_MODULE_PATH}/.shellcheckrc" .shellcheckrc
+		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/.shellcheckrc" .shellcheckrc
 
-		make_ln "${BOILERPLATE_MODULE_PATH}/.vscode/extensions.json" .vscode/extensions.json
-		make_ln "${BOILERPLATE_MODULE_PATH}/.vscode/settings.json" .vscode/settings.json
+		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/.vscode/extensions.json" .vscode/extensions.json
+		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/.vscode/settings.json" .vscode/settings.json
 
 		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/scripts/watch.sh" scripts/watch.sh
 		make_ln "${BOILERPLATE_NODE_MODULE_PATH}/scripts/watch-dev.sh" scripts/watch-dev.sh
