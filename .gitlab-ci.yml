@@ -1,5 +1,7 @@
-# include: "/gitlab/.gitlab-ci.yml"
-include: "/gitlab/.monorepo.gitlab-ci.yml"
+include:
+  - "/gitlab/.gitlab-ci.yml"
+  - "/gitlab/.dom.gitlab-ci.yml"
+  - "/gitlab/.monorepo.gitlab-ci.yml"
 
 publish:npm:
   stage: release
