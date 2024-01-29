@@ -17,7 +17,8 @@
   "workspaces": [
     "packages/boilerplate-common",
     "packages/boilerplate-dom",
-    "packages/boilerplate-node"
+    "packages/boilerplate-node",
+    "packages/boilerplate-preact"
   ],
   "devDependencies": {
     "@mrpelz/boilerplate-common": "*"

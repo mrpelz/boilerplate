@@ -1,5 +1,10 @@
-// @ts-ignore
-import config from '@mrpelz/boilerplate-common/eslint.config.js';
+import {
+  config,
+  configMeta,
+  // @ts-ignore
+} from '@mrpelz/boilerplate-common/eslint.config.js';
+
+export { config, configMeta };
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
-export default config;
+export default [configMeta, config];

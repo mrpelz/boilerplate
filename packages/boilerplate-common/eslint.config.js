@@ -1,3 +1,4 @@
+// @ts-ignore
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 // @ts-ignore
 import typescriptParser from '@typescript-eslint/parser';
