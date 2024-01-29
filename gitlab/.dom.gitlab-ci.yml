@@ -13,3 +13,4 @@ check_stylelint:
         - "**/stylelint.config.js"
   script:
     - make -s -C "packages/boilerplate-dom" include_sub_packages="false" check_stylelint
+    - make -s -C "packages/boilerplate-preact" include_sub_packages="false" check_stylelint
