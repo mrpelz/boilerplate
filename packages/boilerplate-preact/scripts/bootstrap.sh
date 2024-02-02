@@ -47,7 +47,7 @@ EOF
 
 		make_config Makefile "$(
 			cat <<EOF
-BASE_FILE := \$(shell npm ls --parseable --silent "$BOILERPLATE_PREACT_MODULE_PATH" 2>/dev/null)
+BASE_FILE := \$(shell npm ls --parseable --silent "$BOILERPLATE_PREACT_MODULE_NAME" 2>/dev/null)
 
 include \$(BASE_FILE)/Makefile
 EOF
