@@ -66,6 +66,9 @@ export default {
     }),
   ],
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensionAlias: {
+      '.js': ['.ts', '.js'],
+      '.mjs': ['.mts', '.mjs'],
+    },
   },
 };
