@@ -104,7 +104,8 @@ EOF
 // @ts-ignore
 import config from '$BOILERPLATE_DOM_MODULE_NAME/webpack.config.js';
 
-/** @type {import('webpack').Configuration | import('webpack').WebpackOptionsNormalized} */
+// @ts-ignore
+/** @type {import('@mrpelz/boilerplate-dom/webpack.config.js').ConfigurationExtended} */
 export default config;
 EOF
 		)"
