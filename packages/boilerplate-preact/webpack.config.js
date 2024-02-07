@@ -29,5 +29,5 @@ config.module?.rules?.push({
   ],
 });
 
-/** @type {import('webpack').Configuration | import('webpack').WebpackOptionsNormalized} */
+/** @type {import('@mrpelz/boilerplate-dom/webpack.config.js').ConfigurationExtended} */
 export default config;

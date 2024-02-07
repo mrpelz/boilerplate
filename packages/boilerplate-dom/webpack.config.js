@@ -10,7 +10,12 @@ export const dirDist = resolve(dirBase, 'dist');
 export const dirSrc = resolve(dirBase, 'src');
 export const dirStatic = resolve(dirBase, 'static');
 
-/** @type {import('webpack').Configuration | import('webpack').WebpackOptionsNormalized} */
+/**
+ * @typedef ConfigurationExtended
+ * @type {import('webpack').Configuration & { devServer: import('webpack-dev-server').Configuration }}
+ */
+
+/** @type {ConfigurationExtended} */
 export default {
   devServer: {
     compress: true,
