@@ -29,5 +29,6 @@ config.module?.rules?.push({
   ],
 });
 
+// @ts-ignore
 /** @type {import('@mrpelz/boilerplate-dom/webpack.config.js').ConfigurationExtended} */
 export default config;
