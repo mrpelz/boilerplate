@@ -5,7 +5,6 @@ import {
 } from '@mrpelz/boilerplate-dom/eslint.config.js';
 // @ts-ignore
 import pluginReactHooks from 'eslint-plugin-react-hooks';
-import { merge } from 'lodash-es';
 
 export { configMeta };
 
@@ -15,27 +14,16 @@ const reactHooksRecommendedRules =
   );
 
 /** @type {import('eslint').Linter.FlatConfig} */
-const configDownstream = {
+export const config = {
+  ...configUpstream,
   files: ['src/**/*.{js,jsx,ts,tsx}'],
   plugins: {
+    ...configUpstream.plugins,
     // @ts-ignore
     'react-hooks': pluginReactHooks,
   },
-  rules: reactHooksRecommendedRules,
-  settings: {
-    'import/resolver': {
-      typescript: {
-        enforceExtension: true,
-        extensionAlias: {
-          '.js': ['.tsx'],
-        },
-        project: 'tsconfig.json',
-      },
-    },
-  },
+  rules: { ...configUpstream.rules, ...reactHooksRecommendedRules },
 };
-
-export const config = merge({}, configUpstream, configDownstream);
 
 /** @type {import('eslint').Linter.FlatConfig[]} */
 export default [configMeta, config];
