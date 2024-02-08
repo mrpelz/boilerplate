@@ -12,7 +12,7 @@ export const dirStatic = resolve(dirBase, 'static');
 
 /**
  * @typedef ConfigurationExtended
- * @type {import('webpack').Configuration & { devServer: import('webpack-dev-server').Configuration }}
+ * @type {import('webpack').Configuration & { devServer?: import('webpack-dev-server').Configuration }}
  */
 
 /** @type {ConfigurationExtended} */

@@ -1,13 +1,12 @@
 // @ts-ignore
 import configUpstream from '@mrpelz/boilerplate-dom/jest.config.js';
+import { merge } from 'lodash-es';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-const config = {
-  ...configUpstream,
+const configDownstream = {
   moduleNameMapper: {
     '^(\\./.+)\\.m?jsx?$': '$1',
   },
 };
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-export default config;
+export default merge({}, configUpstream, configDownstream);
