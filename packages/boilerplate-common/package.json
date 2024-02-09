@@ -50,6 +50,7 @@
     "nodemon": "latest",
     "prettier": "latest",
     "sort-package-json": "latest",
+    "ts-deepmerge": "latest",
     "ts-jest": "latest",
     "typescript": "latest"
   }
