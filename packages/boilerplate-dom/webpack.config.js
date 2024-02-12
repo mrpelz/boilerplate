@@ -19,7 +19,6 @@ export const dirStatic = resolve(dirBase, 'static');
 export default {
   devServer: {
     compress: true,
-    magicHtml: false,
     port: 3000,
     static: [
       {
