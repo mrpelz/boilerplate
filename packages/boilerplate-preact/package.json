@@ -24,6 +24,7 @@
     "Makefile",
     "scripts/**/*.sh",
     "stylelint.config.js",
+    "tsconfig.build.json",
     "tsconfig.json",
     "tsconfig.meta.json",
     "webpack.config.js"

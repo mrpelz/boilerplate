@@ -27,6 +27,7 @@
     "Makefile",
     "README.md",
     "scripts/**/*.sh",
+    "tsconfig.build.json",
     "tsconfig.json",
     "tsconfig.meta.json"
   ],
