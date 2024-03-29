@@ -1,8 +1,4 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
-  },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "@mrpelz/boilerplate-common/tsconfig.meta.json",
   "include": ["**/*.js", "**/*.mjs"]
