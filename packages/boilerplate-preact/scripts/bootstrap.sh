@@ -116,7 +116,9 @@ EOF
 		make_config tsconfig.json "$(
 			cat <<EOF
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "outDir": "dist"
+  },
   "extends": "$BOILERPLATE_PREACT_MODULE_NAME/tsconfig.json",
   "include": ["src/**/*"]
 }

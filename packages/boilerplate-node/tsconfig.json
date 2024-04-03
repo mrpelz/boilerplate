@@ -1,5 +1,7 @@
 {
-  "compilerOptions": {},
+  "compilerOptions": {
+    "outDir": "dist"
+  },
   "extends": "@mrpelz/boilerplate-common/tsconfig.json",
   "include": ["src/**/*"]
 }
