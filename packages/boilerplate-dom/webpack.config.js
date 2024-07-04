@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import path from 'node:path';
 
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -6,9 +6,9 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export const dirBase = process.cwd();
 
-export const dirDist = resolve(dirBase, 'dist');
-export const dirSrc = resolve(dirBase, 'src');
-export const dirStatic = resolve(dirBase, 'static');
+export const dirDist = path.resolve(dirBase, 'dist');
+export const dirSrc = path.resolve(dirBase, 'src');
+export const dirStatic = path.resolve(dirBase, 'static');
 
 /**
  * @typedef ConfigurationExtended
@@ -31,7 +31,7 @@ export default {
     ],
   },
   devtool: 'nosources-source-map',
-  entry: [resolve(dirSrc, 'main.ts'), resolve(dirSrc, 'main.css')],
+  entry: [path.resolve(dirSrc, 'main.ts'), path.resolve(dirSrc, 'main.css')],
   mode: 'production',
   module: {
     rules: [
@@ -42,7 +42,7 @@ export default {
           {
             loader: 'ts-loader',
             options: {
-              configFile: resolve(dirBase, 'tsconfig.build.json'),
+              configFile: path.resolve(dirBase, 'tsconfig.build.json'),
             },
           },
         ],

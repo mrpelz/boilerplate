@@ -1,4 +1,4 @@
-import { resolve } from 'node:path';
+import path from 'node:path';
 
 import configUpstream, {
   dirBase,
@@ -19,7 +19,7 @@ const configDownstream = {
           {
             loader: 'ts-loader',
             options: {
-              configFile: resolve(dirBase, 'tsconfig.build.json'),
+              configFile: path.resolve(dirBase, 'tsconfig.build.json'),
             },
           },
         ],
@@ -36,7 +36,7 @@ const configDownstream = {
 const config = merge(configUpstream, configDownstream);
 
 const { entry } = config;
-if (entry && Array.isArray(entry)) entry[0] = resolve(dirSrc, 'main.tsx');
+if (entry && Array.isArray(entry)) entry[0] = path.resolve(dirSrc, 'main.tsx');
 
 // @ts-ignore
 /** @type {import('@mrpelz/boilerplate-dom/webpack.config.js').ConfigurationExtended} */
