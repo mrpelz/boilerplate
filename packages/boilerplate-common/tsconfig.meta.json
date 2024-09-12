@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "incremental": false,
     "moduleResolution": "Node",
-    "module": "None",
-    "skipLibCheck": true,
+    "module": "None"
   },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "./tsconfig.json",

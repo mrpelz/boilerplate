@@ -1,4 +1,5 @@
 // @ts-ignore
+import stylisticTs from '@stylistic/eslint-plugin-ts';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 // @ts-ignore
 import typescriptParser from '@typescript-eslint/parser';
@@ -18,9 +19,9 @@ const unicornRecommendedRules =
 /** @type {import('eslint').Linter.RulesRecord} */
 export const rules = {
   ...unicornRecommendedRules,
+  '@stylistic/ts/no-extra-semi': 'error',
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
-  '@typescript-eslint/ban-types': 'error',
   '@typescript-eslint/explicit-module-boundary-types': [
     'error',
     {
@@ -137,9 +138,9 @@ export const rules = {
   '@typescript-eslint/no-array-constructor': 'error',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': 'error',
+  '@typescript-eslint/no-empty-object-type': 'error',
   '@typescript-eslint/no-explicit-any': 'warn',
   '@typescript-eslint/no-extra-non-null-assertion': 'error',
-  '@typescript-eslint/no-extra-semi': 'error',
   '@typescript-eslint/no-inferrable-types': 'error',
   '@typescript-eslint/no-misused-new': 'error',
   '@typescript-eslint/no-namespace': 'error',
@@ -147,6 +148,7 @@ export const rules = {
   '@typescript-eslint/no-non-null-assertion': 'warn',
   '@typescript-eslint/no-shadow': 'error',
   '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unsafe-function-type': 'error',
   '@typescript-eslint/no-unused-vars': [
     'warn',
     {
@@ -156,6 +158,7 @@ export const rules = {
   '@typescript-eslint/no-use-before-define': 'error',
   '@typescript-eslint/no-useless-constructor': 'warn',
   '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/no-wrapper-object-types': 'error',
   '@typescript-eslint/parameter-properties': [
     'warn',
     {
@@ -452,15 +455,16 @@ export const rules = {
 
 /** @type {Record<string, import('eslint').ESLint.Plugin>} */
 export const plugins = {
+  '@stylistic/ts': stylisticTs,
+  // @ts-ignore
   '@typescript-eslint': typescriptPlugin,
   import: importPlugin,
   prettier: prettierPlugin,
-  // @ts-ignore
   'simple-import-sort': simpleImportSortPlugin,
   unicorn: { rules: pluginUnicorn.rules },
 };
 
-/** @type {import('eslint').Linter.FlatConfig} */
+/** @type {import('eslint').Linter.Config} */
 export const configMeta = {
   files: ['**/*.{js,mjs}'],
   ignores: ['dist/**/*', 'node_modules/**/*', 'src/**/*', 'packages/**/*'],
@@ -491,7 +495,7 @@ export const configMeta = {
   },
 };
 
-/** @type {import('eslint').Linter.FlatConfig} */
+/** @type {import('eslint').Linter.Config} */
 export const config = {
   files: ['src/**/*.{js,ts}'],
   languageOptions: {
@@ -521,5 +525,5 @@ export const config = {
   },
 };
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default [configMeta, config];

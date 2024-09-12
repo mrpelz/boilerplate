@@ -36,6 +36,7 @@
     "@commitlint/config-conventional": "latest",
     "@commitlint/types": "latest",
     "@jest/globals": "latest",
+    "@stylistic/eslint-plugin-ts": "latest",
     "@types/eslint": "latest",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",

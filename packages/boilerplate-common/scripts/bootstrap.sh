@@ -60,7 +60,7 @@ EOF
 // @ts-ignore
 import config from '$BOILERPLATE_MODULE_NAME/eslint.config.js';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default config;
 EOF
 		)"
