@@ -94,7 +94,7 @@ Prompts for creating config files look like this:
 // @ts-ignore
 import config from '@mrpelz/boilerplate-common/eslint.config.js';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default config;
 ❓ 📄 add config file "eslint.config.js" to "." in "/home/mrpelz/work/misc/new-project"?
 ❔ [Y/n]
