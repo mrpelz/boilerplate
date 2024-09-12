@@ -14,7 +14,7 @@ const reactHooksRecommendedRules =
     pluginReactHooks.configs.recommended.rules
   );
 
-/** @type {import('eslint').Linter.FlatConfig} */
+/** @type {import('eslint').Linter.Config} */
 const configDownstream = {
   files: ['src/**/*.{jsx,tsx}'],
   plugins: {
@@ -35,5 +35,5 @@ const configDownstream = {
 
 export const config = merge(configUpstream, configDownstream);
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').Linter.Config[]} */
 export default [configMeta, config];
