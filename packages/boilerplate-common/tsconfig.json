@@ -15,6 +15,7 @@
     "noEmit": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
     "outDir": "dist",
     "skipLibCheck": true,
     "sourceMap": true,
