@@ -1,0 +1,56 @@
+variables:
+  GIT_STRATEGY: empty
+
+stages:
+  - prepare
+  - transform
+  - release
+  - deploy
+
+setup:
+  stage: prepare
+  needs:
+  - pipeline: $PARENT_PIPELINE_ID
+    job: util_get_package_spec
+  script:
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - mkdir dockerfiles
+    - |
+      while read PACKAGE_SPEC; do
+        echo "$PACKAGE_SPEC"
+
+        PACKAGE_BUNDLE=$(npm pack --silent "$PACKAGE_SPEC")
+
+        if $(tar tf "$PACKAGE_BUNDLE" "package/Dockerfile" >/dev/null 2>&1); then
+          tar xf "$PACKAGE_BUNDLE" "package/Dockerfile"
+
+          mv "package/Dockerfile" "dockerfiles/$PACKAGE_SPEC"
+          rm -r package
+        fi
+
+        rm "$PACKAGE_BUNDLE"
+      done < packages.txt
+  artifacts:
+    paths:
+      - dockerfiles/*
+
+build:docker:
+  stage: transform
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - |
+      for DOCKERFILE in dockerfiles/*; do
+        PACKAGE_SPEC=$(basename "$DOCKERFILE")
+        PACKAGE_NAME=${${PACKAGE_SPEC#*/}%%@*}
+
+        echo "$PACKAGE_SPEC"
+        cat "$DOCKERFILE"
+
+        /kaniko/executor \
+          --context "${CI_PROJECT_DIR}" \
+          --build-arg "PACKAGE_SPEC=${PACKAGE_SPEC}" \
+          --dockerfile "${DOCKERFILE}" \
+          --destination "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}"
+      done
