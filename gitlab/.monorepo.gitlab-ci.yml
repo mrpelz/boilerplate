@@ -1,3 +1,14 @@
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm/
+    - dist/
+    - node_modules/
+    - packages/*/dist/
+    - packages/*/node_modules/
+
 npm install:
   script:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
