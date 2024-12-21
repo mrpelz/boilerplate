@@ -1,6 +1,6 @@
 {
   "name": "@mrpelz/boilerplate-node",
-  "version": "11.2.1",
+  "version": "11.2.2-docker-build-de4baaf9.0",
   "repository": {
     "type": "git",
     "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git",
