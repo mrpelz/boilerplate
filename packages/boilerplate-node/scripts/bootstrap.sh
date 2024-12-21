@@ -130,4 +130,9 @@ fi
 # shellcheck disable=SC1091
 source "${SCRIPT_PATH}/common-post.sh"
 
+if check_response "💱 include Dockerfile in NPM package releases?" y; then
+	npm pkg set --workspaces=false \
+		"files[]=Dockerfile"
+fi
+
 echo "✅ done"
