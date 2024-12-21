@@ -1,4 +1,4 @@
-image: node:latest
+image: node:lts
 
 cache:
   key:
@@ -175,3 +175,26 @@ publish:gitlab:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
     - npm publish
+
+util_get_package_spec:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - NPM_PACKAGE_SPECS=$(make -s util_get_package_spec 2>/dev/null | head -c -1)
+
+trigger:docker:
+  stage: release
+  needs: ["publish:gitlab", "util_get_package_spec"]
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+  allow_failure: true
+  variables:
+    GIT_STRATEGY: empty
+    NPM_PACKAGE_SPECS: $NPM_PACKAGE_SPECS
+  script:
+    - echo $NPM_PACKAGE_SPECS
+  # trigger:
+  #   include:
+  #   - local: .docker.gitlab-ci.yml
