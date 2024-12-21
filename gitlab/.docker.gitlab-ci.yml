@@ -1,0 +1,39 @@
+variables:
+  GIT_STRATEGY: empty
+
+stages:
+  - prepare
+  - transform
+  - release
+  - deploy
+
+setup:
+  stage: prepare
+  needs:
+  - pipeline: $PARENT_PIPELINE_ID
+    job: util_get_package_spec
+  script:
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - |
+      while read PACKAGE_SPEC; do
+        echo "$PACKAGE_SPEC"
+
+        PACKAGE_BUNDLE=$(npm pack --silent "$PACKAGE_SPEC")
+
+        if [[ $(tar tf "$PACKAGE_BUNDLE" "package/Dockerfile" >/dev/null 2>&1) ]]; then
+          echo "$PACKAGE_SPEC" >> docker-packages.txt
+        fi
+
+        rm "$PACKAGE_BUNDLE"
+      done < packages.txt
+  artifacts:
+    paths:
+      - docker-packages.txt
+
+build:docker:
+  stage: transform
+  script:
+    - |
+      while read PACKAGE_SPEC; do
+        echo "$PACKAGE_SPEC"
+      done < docker-packages.txt
