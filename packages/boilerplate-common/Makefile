@@ -24,6 +24,8 @@
 	util_clear \
 	util_edit \
 	util_get_package_json \
+	util_get_package_spec \
+	util_get_package_spec_inner \
 	util_get_version \
 	util_install_git_hooks \
 	watch \
@@ -247,6 +249,26 @@ util_get_package_json:
 
 	source "$(ROOT_DIR)/scripts/utils.sh"; \
 	display "$$(npm pkg get --workspaces=false)" "json";
+
+util_get_package_spec:
+	if [[ "$(include_sub_packages)" = "false" ]]; then \
+		exit 0; \
+	fi; \
+	\
+	if [[ -n "$(sub_package)" ]]; then \
+		exit 0; \
+	fi; \
+	\
+	if [ ! -d "$(SUB_PACKAGE_DIR)" ]; then \
+		$(MAKE) "util_get_package_spec_inner"; \
+	fi; \
+	\
+	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
+		$(MAKE) "util_get_package_spec_inner" sub_package="$$SUB_PACKAGE" -s -C "$$SUB_PACKAGE" || exit "$$?"; \
+	done;
+
+util_get_package_spec_inner:
+	@echo @$(PKG_NAME)@$(PKG_VERSION)
 
 util_get_version:
 	@echo $(PKG_VERSION)

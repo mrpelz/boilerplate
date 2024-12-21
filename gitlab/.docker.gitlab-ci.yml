@@ -1,0 +1,16 @@
+variables:
+  GIT_STRATEGY: empty
+
+stages:
+  - transform
+  - release
+  - deploy
+
+setup credentials:
+  stage: transform
+  needs:
+  - pipeline: $PARENT_PIPELINE_ID
+    job: util_get_package_spec
+  script:
+    - cat packages.txt
+    - echo $NPM_INSTALL_ADDITIONAL_CONFIG
