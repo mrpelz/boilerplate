@@ -1,0 +1,63 @@
+variables:
+  GIT_STRATEGY: empty
+
+stages:
+  - prepare
+  - release
+  - deploy
+
+setup:
+  stage: prepare
+  needs:
+  - pipeline: $PARENT_PIPELINE_ID
+    job: util_get_package_spec
+  script:
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - mkdir "packages"
+    - |
+      while read PACKAGE_SPEC; do
+        PACKAGE_NAME="$(echo -n "${PACKAGE_SPEC}" | cut -d "/" -f2 | cut -d "@" -f1)"
+
+        echo "${PACKAGE_NAME}"
+        echo "${PACKAGE_SPEC}"
+
+        PACKAGE_BUNDLE="$(npm pack --silent "${PACKAGE_SPEC}")"
+
+        if $(tar -tf "$PACKAGE_BUNDLE" "package/Dockerfile" >/dev/null 2>&1); then
+          mkdir -p "packages/${PACKAGE_NAME}"
+
+          echo -n "${PACKAGE_SPEC}" > "packages/${PACKAGE_NAME}/spec.txt"
+
+          tar --strip-components=1 -xf "${PACKAGE_BUNDLE}" "package/Dockerfile"
+          mv "Dockerfile" "packages/${PACKAGE_NAME}/"
+
+        fi
+
+        rm "${PACKAGE_BUNDLE}"
+      done < "packages.txt"
+  artifacts:
+    paths:
+      - packages/**/*
+
+build:docker:
+  stage: release
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - echo "$NPM_INSTALL_ADDITIONAL_CONFIG" > "/kaniko/.npmrc"
+    - |
+      for PACKAGE in packages/*; do
+        PACKAGE_NAME="$(basename "${PACKAGE}")"
+        PACKAGE_SPEC="$(cat "${PACKAGE}/spec.txt")"
+
+        echo "${PACKAGE_NAME}"
+        echo "${PACKAGE_SPEC}"
+
+        /kaniko/executor \
+          --build-arg "PACKAGE_SPEC=${PACKAGE_SPEC}" \
+          --cleanup \
+          --context "${CI_PROJECT_DIR}" \
+          --destination "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}" \
+          --dockerfile "${PACKAGE}/Dockerfile"
+      done
