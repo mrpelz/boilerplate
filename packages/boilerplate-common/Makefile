@@ -261,6 +261,7 @@ util_get_package_spec:
 	\
 	if [ ! -d "$(SUB_PACKAGE_DIR)" ]; then \
 		$(MAKE) "util_get_package_spec_inner"; \
+		exit 0; \
 	fi; \
 	\
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
