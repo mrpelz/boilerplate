@@ -194,6 +194,7 @@ trigger:docker:
   allow_failure: true
   variables:
     GIT_STRATEGY: empty
+    NPM_INSTALL_ADDITIONAL_CONFIG: $NPM_INSTALL_ADDITIONAL_CONFIG
     PARENT_PIPELINE_ID: $CI_PIPELINE_ID
   trigger:
     include:
