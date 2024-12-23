@@ -7,7 +7,7 @@ if check_response "💱 apply changes to \"package.json\"?" y; then
 		"main=dist/main.js" \
 		"module=dist/main.js" \
 		"types=dist/main.d.ts" \
-		"files[0]=dist/**/*.{js,map,ts}"
+		"files[]=dist/**/*.{js,map,ts}"
 
 	if check_command git; then
 		USER_NAME=$(git config user.name)

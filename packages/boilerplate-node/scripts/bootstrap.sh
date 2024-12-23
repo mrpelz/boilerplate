@@ -130,4 +130,11 @@ fi
 # shellcheck disable=SC1091
 source "${SCRIPT_PATH}/common-post.sh"
 
+if check_response "🐳 use Docker and copy Dockerfile from \"$BOILERPLATE_NODE_MODULE_NAME\"?" y; then
+	npm pkg set --workspaces=false \
+		"files[]=Dockerfile"
+
+	make_config Dockerfile "$(cat "${BOILERPLATE_NODE_MODULE_PATH}/Dockerfile")"
+fi
+
 echo "✅ done"
