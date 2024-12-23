@@ -197,4 +197,6 @@ trigger:docker:
     PARENT_PIPELINE_ID: $CI_PIPELINE_ID
   trigger:
     include:
-    - local: "gitlab/.docker.gitlab-ci.yml"
+    - project: "mrpelz/boilerplate"
+      ref: main
+      file: "gitlab/.docker.gitlab-ci.yml"
