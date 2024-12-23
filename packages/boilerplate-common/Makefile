@@ -61,7 +61,7 @@ SUB_RUN = \
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
 		echo "$$SUB_PACKAGE:$(@)"; \
 		\
-		$(MAKE) "$(@)" sub_package="$$SUB_PACKAGE" -s -C "$$SUB_PACKAGE" || exit "$$?"; \
+		$(MAKE) -s -C "$$SUB_PACKAGE" sub_package="$$SUB_PACKAGE" "$(@)" || exit "$$?"; \
 		echo; \
 	done; \
 	\
@@ -260,11 +260,12 @@ util_get_package_spec:
 	fi; \
 	\
 	if [ ! -d "$(SUB_PACKAGE_DIR)" ]; then \
-		$(MAKE) "util_get_package_spec_inner"; \
+		$(MAKE) -s "util_get_package_spec_inner" || exit "$$?"; \
+		exit 0; \
 	fi; \
 	\
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
-		$(MAKE) "util_get_package_spec_inner" sub_package="$$SUB_PACKAGE" -s -C "$$SUB_PACKAGE" || exit "$$?"; \
+		$(MAKE) -s -C "$$SUB_PACKAGE" sub_package="$$SUB_PACKAGE" "util_get_package_spec_inner" || exit "$$?"; \
 	done;
 
 util_get_package_spec_inner:
