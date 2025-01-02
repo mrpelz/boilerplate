@@ -14,6 +14,7 @@ stages:
   - check
   - transform
   - release
+  - deploy
 
 npm install:
   stage: prepare
@@ -106,6 +107,16 @@ transform_prod:
   script:
     - make -s transform_prod
 
+util_get_package_spec:
+  stage: transform
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - make -s util_get_package_spec 2>/dev/null > packages.txt
+  artifacts:
+    paths:
+      - packages.txt
+
 tag:prerelease:
   stage: release
   rules:
@@ -170,33 +181,40 @@ tag:major:
 publish:gitlab:
   stage: release
   rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      variables:
+        VERSION_TAG: "latest"
     - if: $CI_COMMIT_TAG
+      variables:
+        VERSION_TAG: "pre-${CI_COMMIT_REF_SLUG}"
   script:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
-    - npm publish
+    - npm publish --tag "${VERSION_TAG}"
 
-util_get_package_spec:
+.publish:docker:
   stage: release
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
-    - make -s util_get_package_spec 2>/dev/null > packages.txt
-  artifacts:
-    paths:
-      - packages.txt
-
-trigger:docker:
-  stage: release
-  needs: ["publish:gitlab", "util_get_package_spec"]
-  rules:
-    - if: $CI_COMMIT_TAG
-  allow_failure: true
+  needs: ["publish:gitlab"]
   variables:
     GIT_STRATEGY: empty
     NPM_INSTALL_ADDITIONAL_CONFIG: $NPM_INSTALL_ADDITIONAL_CONFIG
     PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+
+publish:docker_local:
+  extends: .publish:docker
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_PROJECT_ID == "111"
   trigger:
+    strategy: depend
+    include:
+    - local: "gitlab/.docker.gitlab-ci.yml"
+
+publish:docker:
+  extends: .publish:docker
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_PROJECT_ID != "111"
+  trigger:
+    strategy: depend
     include:
     - project: "mrpelz/boilerplate"
       ref: main
