@@ -26,6 +26,7 @@
 	util_get_package_json \
 	util_get_package_spec \
 	util_get_package_spec_inner \
+	util_get_next_prerelease_version \
 	util_get_version \
 	util_install_git_hooks \
 	watch \
@@ -270,6 +271,11 @@ util_get_package_spec:
 
 util_get_package_spec_inner:
 	@echo @$(PKG_NAME)@$(PKG_VERSION)
+
+util_get_next_prerelease_version:
+	BASE_VERSION=$$(semver "$(PKG_VERSION)" -i patch); \
+	PREVIOUS_TAG_COUNT=$$(git ls-remote --tags --quiet origin "refs/tags/v$${BASE_VERSION}-$(ARGS).*" | grep -v "\^{}" | wc -l); \
+	echo $$(semver "$(PKG_VERSION)" -i prerelease -n false --preid "$(ARGS).$${PREVIOUS_TAG_COUNT}");
 
 util_get_version:
 	@echo $(PKG_VERSION)
