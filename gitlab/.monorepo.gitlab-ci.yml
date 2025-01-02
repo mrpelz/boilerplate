@@ -20,10 +20,12 @@ tag:prerelease:
     - git config user.name "${CI_BOT_NAME}"
     - git remote add gitlab_origin "${CI_BOT_ORIGIN}"
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
-    - npm version prerelease --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false --preid "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
+    - |
+      NEXT_PRERELEASE_VERSION="$(make -s util_get_next_prerelease_version "${CI_COMMIT_REF_SLUG}")"
+      npm version "${NEXT_PRERELEASE_VERSION}" --workspaces --include-workspace-root --audit=false --fund=false --git-tag-version=false
     - git add --all .
-    - git commit -m "$(make -s util_get_version 2>/dev/null)"
-    - git tag "v$(make -s util_get_version 2>/dev/null)"
+    - git commit -m "${NEXT_PRERELEASE_VERSION}"
+    - git tag "v${NEXT_PRERELEASE_VERSION}" -m "${CI_COMMIT_REF_SLUG}"
     - git push gitlab_origin --tags
 
 tag:patch:
@@ -69,4 +71,4 @@ publish:gitlab:
   script:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
-    - npm publish --workspaces
+    - npm publish --workspaces --tag "${VERSION_TAG}"
