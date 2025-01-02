@@ -4,13 +4,13 @@ variables:
 stages:
   - prepare
   - release
-  - deploy
 
-setup:
+extract dockerfiles:
   stage: prepare
   needs:
   - pipeline: $PARENT_PIPELINE_ID
     job: util_get_package_spec
+  image: node:lts
   script:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - echo "$NPM_INSTALL_ADDITIONAL_CONFIG"
@@ -40,7 +40,7 @@ setup:
     paths:
       - packages/**/*
 
-build:docker:
+build:
   stage: release
   image:
     name: gcr.io/kaniko-project/executor:debug
