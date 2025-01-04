@@ -66,7 +66,7 @@ tag:major:
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
-publish:gitlab:
+publish:npm:gitlab:
   script:
     - npm config set "//${CI_SERVER_HOST}/api/v4/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=${CI_JOB_TOKEN}"
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"

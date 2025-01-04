@@ -182,7 +182,7 @@ tag:major:
     - git push gitlab_origin "HEAD:${CI_COMMIT_REF_NAME}" --push-option=ci.skip
     - git push gitlab_origin --tags
 
-publish:gitlab:
+publish:npm:gitlab:
   stage: release
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
@@ -196,25 +196,25 @@ publish:gitlab:
     - npm config set "@${CI_PROJECT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
     - npm publish --tag "${VERSION_TAG}"
 
-.publish:docker:
+.publish:container:
   stage: release
-  needs: ["publish:gitlab"]
+  needs: ["publish:npm:gitlab"]
   variables:
     GIT_STRATEGY: empty
     NPM_INSTALL_ADDITIONAL_CONFIG: $NPM_INSTALL_ADDITIONAL_CONFIG
     PARENT_PIPELINE_ID: $CI_PIPELINE_ID
 
-publish:docker_local:
-  extends: .publish:docker
+publish:container_local:
+  extends: .publish:container
   rules:
     - if: $CI_COMMIT_TAG && $CI_PROJECT_ID == "111"
   trigger:
     strategy: depend
     include:
-    - local: "gitlab/.docker.gitlab-ci.yml"
+    - local: "gitlab/.container.gitlab-ci.yml"
 
-publish:docker:
-  extends: .publish:docker
+publish:container:
+  extends: .publish:container
   rules:
     - if: $CI_COMMIT_TAG && $CI_PROJECT_ID != "111"
   trigger:
@@ -222,4 +222,4 @@ publish:docker:
     include:
     - project: "mrpelz/boilerplate"
       ref: main
-      file: "gitlab/.docker.gitlab-ci.yml"
+      file: "gitlab/.container.gitlab-ci.yml"
