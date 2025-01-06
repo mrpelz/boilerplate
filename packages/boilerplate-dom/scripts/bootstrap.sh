@@ -160,8 +160,4 @@ fi
 # shellcheck disable=SC1091
 source "${SCRIPT_PATH}/common-post.sh"
 
-if check_response "📂 create \"static\" directory (this will *not* overwrite/empty out existing directories)?" y; then
-	mkdir -p static
-fi
-
 echo "✅ done"

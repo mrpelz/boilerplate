@@ -8,7 +8,8 @@ export const dirBase = process.cwd();
 
 export const dirDist = path.resolve(dirBase, 'dist');
 export const dirSrc = path.resolve(dirBase, 'src');
-export const dirStatic = path.resolve(dirBase, 'static');
+
+export const webpackServe = process.env.WEBPACK_SERVE === 'true';
 
 /**
  * @typedef ConfigurationExtended
@@ -20,17 +21,9 @@ export default {
   devServer: {
     compress: true,
     port: 3000,
-    static: [
-      {
-        directory: dirSrc,
-        publicPath: '/src',
-      },
-      {
-        directory: dirStatic,
-      },
-    ],
+    static: [],
   },
-  devtool: 'nosources-source-map',
+  devtool: webpackServe ? 'eval-cheap-module-source-map' : 'source-map',
   entry: [path.resolve(dirSrc, 'main.ts'), path.resolve(dirSrc, 'main.css')],
   mode: 'production',
   module: {
@@ -62,6 +55,7 @@ export default {
     devtoolModuleFilenameTemplate: '[resource-path]',
     path: dirDist,
   },
+  performance: false,
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
