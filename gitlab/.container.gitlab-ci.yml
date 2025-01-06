@@ -45,8 +45,8 @@ make images:
     matrix:
       - ARCH: amd64
         TAG: x86_64
-      - ARCH: arm64
-        TAG: arm64
+      # - ARCH: arm64
+      #   TAG: arm64
   tags:
     - $TAG
   rules:
@@ -85,7 +85,8 @@ make multi-arch images:
       variables:
         VERSION_TAG: "pre-${CI_COMMIT_TAG_MESSAGE}"
   variables:
-    PLATFORMS: "linux/amd64,linux/arm64"
+    PLATFORMS: "linux/amd64"
+    # PLATFORMS: "linux/amd64,linux/arm64"
   script:
     - |
       for PACKAGE in packages/*; do
