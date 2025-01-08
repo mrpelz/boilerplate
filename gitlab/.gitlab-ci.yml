@@ -15,6 +15,7 @@ stages:
   - transform
   - release
   - deploy
+  - post
 
 npm install:
   stage: prepare
@@ -25,6 +26,17 @@ npm install:
   script:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm ci --audit=false --fund=false
+
+post prerelease pipeline:
+  stage: prepare
+  needs: ["npm install"]
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: on_success
+  script:
+    - npm exec boilerplate-ci-post-prerelease-pipeline
 
 check_commit:
   stage: check
@@ -223,3 +235,14 @@ publish:container:
     - project: "mrpelz/boilerplate"
       ref: main
       file: "gitlab/.container.gitlab-ci.yml"
+
+post prerelease published:
+  stage: post
+  needs: ["publish:npm:gitlab"]
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: on_success
+  script:
+    - npm exec boilerplate-ci-post-prerelease-published
