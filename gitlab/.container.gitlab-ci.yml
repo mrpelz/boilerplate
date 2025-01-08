@@ -5,6 +5,7 @@ stages:
   - prepare
   - release (single arch)
   - release (multi arch)
+  - post
 
 extract dockerfiles:
   stage: prepare
@@ -91,13 +92,30 @@ make multi-arch images:
     - |
       for PACKAGE in packages/*; do
         PACKAGE_NAME="$(basename "${PACKAGE}")"
+        TARGET="${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}"
 
         manifest-tool \
           --username "${CI_REGISTRY_USER}" \
           --password "${CI_REGISTRY_PASSWORD}" \
           push from-args \
           --platforms "${PLATFORMS}" \
-          --template "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}-ARCH" \
+          --template "${TARGET}-ARCH" \
           --tags "${VERSION_TAG}" \
-          --target "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}"
+          --target "${TARGET}"
+
+        echo "${TARGET}" >> "containers.txt"
       done
+  artifacts:
+    paths:
+      - containers.txt
+
+post prerelease containers published:
+  stage: post
+  image: node:lts
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: on_success
+  script:
+    - npm exec boilerplate-ci-post-prerelease-containers-published
