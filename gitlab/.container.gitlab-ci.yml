@@ -1,10 +1,8 @@
-variables:
-  GIT_STRATEGY: empty
-
 stages:
   - prepare
   - release (single arch)
   - release (multi arch)
+  - post
 
 extract dockerfiles:
   stage: prepare
@@ -12,6 +10,8 @@ extract dockerfiles:
   - pipeline: $PARENT_PIPELINE_ID
     job: util_get_package_spec
   image: node:lts
+  variables:
+    GIT_STRATEGY: empty
   script:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - mkdir "packages"
@@ -41,6 +41,8 @@ make images:
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
+  variables:
+    GIT_STRATEGY: empty
   parallel:
     matrix:
       - ARCH: amd64
@@ -77,6 +79,10 @@ make multi-arch images:
   image:
     name: mplatform/manifest-tool:alpine
     entrypoint: ["/bin/sh"]
+  variables:
+    GIT_STRATEGY: empty
+    PLATFORMS: "linux/amd64"
+    # PLATFORMS: "linux/amd64,linux/arm64"
   rules:
     - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
       variables:
@@ -84,20 +90,36 @@ make multi-arch images:
     - if: $CI_COMMIT_TAG
       variables:
         VERSION_TAG: "pre-${CI_COMMIT_TAG_MESSAGE}"
-  variables:
-    PLATFORMS: "linux/amd64"
-    # PLATFORMS: "linux/amd64,linux/arm64"
   script:
     - |
       for PACKAGE in packages/*; do
         PACKAGE_NAME="$(basename "${PACKAGE}")"
+        TARGET="${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}"
 
         manifest-tool \
           --username "${CI_REGISTRY_USER}" \
           --password "${CI_REGISTRY_PASSWORD}" \
           push from-args \
           --platforms "${PLATFORMS}" \
-          --template "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}-ARCH" \
+          --template "${TARGET}-ARCH" \
           --tags "${VERSION_TAG}" \
-          --target "${CI_REGISTRY_IMAGE}/${PACKAGE_NAME}:${CI_COMMIT_TAG}"
+          --target "${TARGET}"
+
+        echo "${TARGET}" >> "containers.txt"
       done
+  artifacts:
+    paths:
+      - containers.txt
+
+post prerelease containers published:
+  stage: post
+  image: node:lts
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+      when: never
+    - if: $CI_COMMIT_TAG
+      when: on_success
+  script:
+    - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
+    - npm ci --audit=false --fund=false
+    - npm exec boilerplate-ci-post-prerelease-containers-published
