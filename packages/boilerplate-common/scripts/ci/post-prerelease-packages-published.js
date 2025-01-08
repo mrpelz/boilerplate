@@ -26,7 +26,7 @@ import {
     if (!projectUrl || !tagMessage || !version) return;
 
     const packagesFile = await readFile('packages.txt', { encoding: 'utf8' });
-    const packagesSpecs = packagesFile.trim().split('\n');
+    const packageSpecs = packagesFile.trim().split('\n');
 
     console.info({
       CI_COMMIT_TAG: version,
@@ -39,13 +39,13 @@ import {
 
       Packages in [tag "${version}"](${projectUrl}/-/tags/${version}) have been published to the [Gitlab NPM-registry](${projectUrl}/-/packages):
 
-      ${packagesSpecs.map((packageSpec) => `* ${packageSpec}`).join('\n')}
+      ${packageSpecs.map((packageSpec) => `* ${packageSpec}`).join('\n')}
 
       They are using the distribution tag \`pre-${tagMessage}\`, install using:
 
       \`\`\`
       npm install \\
-      ${packagesSpecs.map((packageSpec) => `"${packageSpec.split('@').slice(0, -1).join('@')}@pre-${tagMessage}"`).join(' \\\n')}
+      ${packageSpecs.map((packageSpec) => `"${packageSpec.split('@').slice(0, -1).join('@')}@pre-${tagMessage}"`).join(' \\\n')}
       \`\`\`
     `);
 

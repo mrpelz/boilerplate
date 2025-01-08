@@ -1,6 +1,8 @@
 #!/usr/bin/env -S node --experimental-modules
 /* eslint-disable no-console */
 
+import { readFile } from 'node:fs/promises';
+
 import {
   fetchMergeRequests,
   fetchPipelineUser,
@@ -23,6 +25,11 @@ import {
     } = process.env;
     if (!projectUrl || !tagMessage || !version) return;
 
+    const containersFile = await readFile('containers.txt', {
+      encoding: 'utf8',
+    });
+    const containerSpecs = containersFile.trim().split('\n');
+
     console.info({
       CI_COMMIT_TAG: version,
       CI_COMMIT_TAG_MESSAGE: tagMessage,
@@ -34,7 +41,14 @@ import {
 
       Containers in [tag "${version}"](${projectUrl}/-/tags/${version}) have been published to the [Gitlab container-registry](${projectUrl}/container_registry):
 
-      They are available as tag \`<package-name>:pre-${tagMessage}\`.
+      ${containerSpecs.map((containerSpec) => `* ${containerSpec}`).join('\n')}
+
+      They are available as tag \`<package-name>:pre-${tagMessage}\`, pull using:
+
+      \`\`\`
+      docker pull \\
+      ${containerSpecs.map((containerSpec) => `"${containerSpec.split(':').slice(0, -1).join(':')}:pre-${tagMessage}"`).join(' \\\n')}
+      \`\`\`
     `);
 
     const [projectMergeRequests, pipelineUsername] = await Promise.all([
