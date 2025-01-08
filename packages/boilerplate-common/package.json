@@ -13,7 +13,9 @@
   "module": "dist/main.js",
   "types": "dist/main.d.ts",
   "bin": {
-    "boilerplate-bootstrap": "scripts/bootstrap.sh"
+    "boilerplate-bootstrap": "scripts/bootstrap.sh",
+    "boilerplate-ci-post-prerelease-pipeline": "scripts/ci/post-prerelease-pipeline.js",
+    "boilerplate-ci-post-prerelease-published": "scripts/ci/post-prerelease-published.js"
   },
   "files": [
     "dist/**/*.{js,map,ts}",
@@ -26,7 +28,7 @@
     "jest.config.js",
     "Makefile",
     "README.md",
-    "scripts/**/*.sh",
+    "scripts/**/*",
     "tsconfig.build.json",
     "tsconfig.json",
     "tsconfig.meta.json"
