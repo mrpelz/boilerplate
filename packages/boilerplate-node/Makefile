@@ -6,14 +6,11 @@ include $(BASE_FILE)/Makefile
 	run \
 	watch_run
 
-NODE := node --use_strict --enable-source-maps --stack-trace-limit=100 "dist/main.js"
+NODE := node --use_strict --enable-source-maps --stack-trace-limit=100
+NODE_ENTRYPOINT := "dist/main.js"
 
 run:
-	$(SUB_RUN)
-
-	$(NODE)
+	$(NODE) $(NODE_ENTRYPOINT)
 
 watch_run:
-	nodemon --quiet --watch "dist/**/*" --watch "node_modules/**/*" --ext "js,mjs" \
-		--exec '$(NODE)'; \
-	exit 0;
+	$(NODE) --watch $(NODE_ENTRYPOINT)
