@@ -281,7 +281,7 @@ util_get_version:
 	@echo $(PKG_VERSION)
 
 util_install_git_hooks:
-	husky install
+	husky
 
 watch:
 	scripts/watch.sh
