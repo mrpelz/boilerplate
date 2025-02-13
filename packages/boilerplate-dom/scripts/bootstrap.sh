@@ -83,12 +83,12 @@ EOF
 		make_config stylelint.config.js "$(
 			cat <<EOF
 import { execSync } from 'node:child_process';
-import { resolve } from 'node:path';
+import path from 'node:path';
 
 /** @type {import('stylelint').Config} */
 export default {
   extends: [
-    resolve(
+    path.resolve(
       execSync('npm ls --parseable "$BOILERPLATE_DOM_MODULE_NAME"', {
         encoding: 'utf8',
       }).trim(),
