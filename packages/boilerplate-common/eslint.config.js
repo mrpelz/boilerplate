@@ -3,8 +3,8 @@ import stylisticTs from '@stylistic/eslint-plugin-ts';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 // @ts-ignore
 import typescriptParser from '@typescript-eslint/parser';
-// @ts-ignore
-import importPlugin from 'eslint-plugin-import';
+// // @ts-ignore
+// import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
 // @ts-ignore
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -227,22 +227,22 @@ export const rules = {
   'handle-callback-err': 'error',
   'id-blacklist': 'error',
   'id-match': 'error',
-  'import/extensions': [
-    'error',
-    'ignorePackages',
-    {
-      cjs: 'never',
-      js: 'always',
-      jsx: 'never',
-      mjs: 'never',
-      ts: 'never',
-      tsx: 'never',
-    },
-  ],
-  'import/no-commonjs': 'error',
-  'import/no-duplicates': 'error',
-  'import/no-named-as-default': 'warn',
-  'import/no-named-as-default-member': 'warn',
+  // 'import/extensions': [
+  //   'error',
+  //   'ignorePackages',
+  //   {
+  //     cjs: 'never',
+  //     js: 'always',
+  //     jsx: 'never',
+  //     mjs: 'never',
+  //     ts: 'never',
+  //     tsx: 'never',
+  //   },
+  // ],
+  // 'import/no-commonjs': 'error',
+  // 'import/no-duplicates': 'error',
+  // 'import/no-named-as-default': 'warn',
+  // 'import/no-named-as-default-member': 'warn',
   'jsx-quotes': 'error',
   'key-spacing': 'error',
   'keyword-spacing': [
@@ -458,7 +458,7 @@ export const plugins = {
   '@stylistic/ts': stylisticTs,
   // @ts-ignore
   '@typescript-eslint': typescriptPlugin,
-  import: importPlugin,
+  // import: importPlugin,
   prettier: prettierPlugin,
   'simple-import-sort': simpleImportSortPlugin,
   unicorn: { rules: pluginUnicorn.rules },
@@ -481,8 +481,8 @@ export const configMeta = {
     ...rules,
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/naming-convention': 'off',
-    'import/no-named-as-default': 'off',
-    'import/no-named-as-default-member': 'off',
+    // 'import/no-named-as-default': 'off',
+    // 'import/no-named-as-default-member': 'off',
     'unicorn/prefer-export-from': 'off',
   },
   settings: {
