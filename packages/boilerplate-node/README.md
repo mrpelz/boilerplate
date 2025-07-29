@@ -173,7 +173,7 @@ make <target>
 > ```
 > to your `.zshrc`.
 
-> **ℹ️ Good to know III**
+> **ℹ️ Good to know**
 >
 > The boilerplate tries to handle “monorepos”.  
 > For the purpose of this ReadMe, “root package” is the package that contains NPM workspace definitions and the packages within those workspaces are called “sub packages”.
@@ -207,7 +207,7 @@ Run `commitlint` for the latest commit.
 
 Run `tsc` to typecheck meta-files.
 
-> **ℹ️ Good to know II**
+> **ℹ️ Good to know**
 >
 > For the purpose of this ReadMe, “meta-file” means a file that is related to the tooling itself (e.g. configuring ESLint) and is not part of the application’s source code.
 
