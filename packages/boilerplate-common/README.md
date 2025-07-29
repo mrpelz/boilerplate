@@ -1,4 +1,4 @@
-# boilerplate
+# `@mrpelz/boilerplate-common`
 
 Easily start new TypeScript-based projects using a modular and extensible toolset.  
 This boilerplate tries to provide opinionated defaults for everyday-use while handling common pitfalls for edge-cases. If your edge-case is too special, it won’t prescribe a fixed configuration, always allowing a route to customization without all-or-nothing breakout.
@@ -30,17 +30,11 @@ For configurations handled through skeleton files, customization is easily done 
 
 For the very few symlinked configs, the user can choose to stick with the updated default or move to a fully-custom file maintained at the project’s discretion. (Re)running a bootstrap script allows for easy restore of previously customized files, if a project withes to return to a tool’s provided default config.
 
-## NPM-Packages
-
-This repository is a “monorepo” defining multiple workspaces. The NPM package at the repository root only acts as the container and while it uses the boilerplate’s tooling itself, it does not create any NPM packages itself.
-
-The sub-packages contained in `packages/*` implement boilerplates for specific project types:
-
-### `@mrpelz/boilerplate-common`
+## NPM-Package
 
 Provides the configuration basis for the other boilerplate packages. Use it for projects that produce library code not strictly meant to run browser- or server-side.
 
-#### Features
+### Features
 
 * TypeScript-config to output native ESM-modules
 * produce sourcemaps
@@ -60,38 +54,6 @@ Provides the configuration basis for the other boilerplate packages. Use it for 
   (no guessing breaking-changes from commit messages, press the appropriate play-button for pre-, patch-, minor- or major-release tagging after check-pipeline completes)
   * produce NPM-packages on release and publish to GitLab package-registry
   * comment prerelease-info to merge requests
-
-### `@mrpelz/boilerplate-node`
-
-Depends on `@mrpelz/boierplate-common` and provides the configuration basis for NodeJS-based projects, i.e. for libraries or applications that run exclusively server-side.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-common`]
-* use NodeJS’s native watch-feature to restart execution on code change (without leaving zombie-processes behind)
-* GitLab-CI pipelines
-  * produce Docker-images on release and publish to GitLab image-registry
-
-### `@mrpelz/boilerplate-dom`
-
-Depends on `@mrpelz/boierplate-common` and provides the configuration basis for browser-based projects, i.e. for libraries or applications that run (primarily) browser-side.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-common`]
-* bundle and minify code using Webpack
-* default Webpack-dev-server setup for hot-module-replacement on code-change
-* CSS-linting using Stylelint
-* CSS-bundling using Webpack
-
-### `@mrpelz/boilerplate-preact`
-
-Depends on `@mrpelz/boierplate-dom` and provides the configuration basis for browser-based projects using Preact for light-weight JSX/TSX-based view rendering.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-dom`]
-* correctly handle JSX/TSX modules in all tooling
 
 ## Usage
 

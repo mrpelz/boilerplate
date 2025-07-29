@@ -1,4 +1,4 @@
-# boilerplate
+# `@mrpelz/boilerplate-node`
 
 Easily start new TypeScript-based projects using a modular and extensible toolset.  
 This boilerplate tries to provide opinionated defaults for everyday-use while handling common pitfalls for edge-cases. If your edge-case is too special, it won’t prescribe a fixed configuration, always allowing a route to customization without all-or-nothing breakout.
@@ -30,17 +30,11 @@ For configurations handled through skeleton files, customization is easily done 
 
 For the very few symlinked configs, the user can choose to stick with the updated default or move to a fully-custom file maintained at the project’s discretion. (Re)running a bootstrap script allows for easy restore of previously customized files, if a project withes to return to a tool’s provided default config.
 
-## NPM-Packages
+## NPM-Package
 
-This repository is a “monorepo” defining multiple workspaces. The NPM package at the repository root only acts as the container and while it uses the boilerplate’s tooling itself, it does not create any NPM packages itself.
+Provides the configuration basis for NodeJS-based projects, i.e. for libraries or applications that run exclusively server-side.
 
-The sub-packages contained in `packages/*` implement boilerplates for specific project types:
-
-### `@mrpelz/boilerplate-common`
-
-Provides the configuration basis for the other boilerplate packages. Use it for projects that produce library code not strictly meant to run browser- or server-side.
-
-#### Features
+### Features
 
 * TypeScript-config to output native ESM-modules
 * produce sourcemaps
@@ -54,44 +48,14 @@ Provides the configuration basis for the other boilerplate packages. Use it for 
 * lint Bash-scripts using Shellcheck
 * derive package versions from git tags and automatically handle prerelease-versioning in a feature-branch workflow
 * Tmux niceties to help keep watch on all lint/check tasks during development
+* use NodeJS’s native watch-feature to restart execution on code change (without leaving zombie-processes behind)
 * GitLab-CI pipelines
   * to run relevant checks on every change pushed to a merge request
   * manually trigger (pre-)release tagging after checks complete  
   (no guessing breaking-changes from commit messages, press the appropriate play-button for pre-, patch-, minor- or major-release tagging after check-pipeline completes)
   * produce NPM-packages on release and publish to GitLab package-registry
   * comment prerelease-info to merge requests
-
-### `@mrpelz/boilerplate-node`
-
-Depends on `@mrpelz/boierplate-common` and provides the configuration basis for NodeJS-based projects, i.e. for libraries or applications that run exclusively server-side.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-common`]
-* use NodeJS’s native watch-feature to restart execution on code change (without leaving zombie-processes behind)
-* GitLab-CI pipelines
   * produce Docker-images on release and publish to GitLab image-registry
-
-### `@mrpelz/boilerplate-dom`
-
-Depends on `@mrpelz/boierplate-common` and provides the configuration basis for browser-based projects, i.e. for libraries or applications that run (primarily) browser-side.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-common`]
-* bundle and minify code using Webpack
-* default Webpack-dev-server setup for hot-module-replacement on code-change
-* CSS-linting using Stylelint
-* CSS-bundling using Webpack
-
-### `@mrpelz/boilerplate-preact`
-
-Depends on `@mrpelz/boierplate-dom` and provides the configuration basis for browser-based projects using Preact for light-weight JSX/TSX-based view rendering.
-
-#### Features
-
-* [all from `@mrpelz/boilerplate-dom`]
-* correctly handle JSX/TSX modules in all tooling
 
 ## Usage
 
@@ -137,25 +101,25 @@ git init
 npm init # you can just rush through this, most of the `package.json` will be fitted with proper values later
 ```
 
-### 2. Add `boilerplate-common` to your Project
+### 2. Add `boilerplate-node` to your Project
 
 ```bash
 # add module as dev-dependency
-npm install --save-dev @mrpelz/boilerplate-common
+npm install --save-dev @mrpelz/boilerplate-node
 ```
 
 ### 3. Run Bootstrap Script
 
 ```bash
 # use `npm exec` to call CLIs exposed in `node_modules/.bin`
-npm exec boilerplate-bootstrap
+npm exec boilerplate-node-bootstrap
 ```
 
 Running the script without any arguments will walk you through the process of creating config file symlinks or skeletons step by step, allowing you to review what will be done for each file and confirming it separately:
 
 ```bash
-ℹ running with "@mrpelz/boilerplate-common" as dependency
-❓ 🖇 install symbolic links referencing files in "@mrpelz/boilerplate-common"?
+ℹ running with "@mrpelz/boilerplate-node" as dependency
+❓ 🖇 install symbolic links referencing files in "@mrpelz/boilerplate-node"?
 ❔ [Y/n]
 ```
 
@@ -181,10 +145,10 @@ Prompts for creating config files look like this:
 
 #### Automatically Selecting Responses
 
-`boilerplate-bootstrap` can be called with an argument of `y`, `n` or `d`, always selecting yes, no or the default (capitalized) response for each prompt:
+`boilerplate-node-bootstrap` can be called with an argument of `y`, `n` or `d`, always selecting yes, no or the default (capitalized) response for each prompt:
 
 ```bash
-npm exec boilerplate-bootstrap y
+npm exec boilerplate-node-bootstrap y
 ```
 
 ## Scripts
@@ -366,7 +330,17 @@ Output `package.json` version to stdout.
 
 Run `husky` to (re)install Git-hooks.
 
+## Run
+
+### `make run`
+
+Run NodeJS application.
+
 ## Watch
+
+### `make watch_run`
+
+Run NodeJS application with `--watch`-option.
 
 ### `make watch`
 
@@ -376,6 +350,7 @@ Use Tmux to show multi-panel view for:
 * `watch_test`
 * `watch_build`
 * `watch_config`
+* `watch_run`
 
 ### `make watch_build`
 
@@ -393,6 +368,7 @@ Use Tmux to show multi-panel view for:
 * `watch_test`
 * `watch_build`
 * `watch_config`
+* `watch_run`
 
 …and provide “work-area” shell at the bottom.
 
