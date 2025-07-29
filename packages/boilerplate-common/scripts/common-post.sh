@@ -24,8 +24,9 @@ if check_response "🕳 run npm install?" y; then
 	npm install
 fi
 
-if check_response "📂 create \"src\" directory (this will *not* overwrite/empty out existing directories)?" y; then
+if check_response "📂 create \"src\" directory and main entry-file (this will *not* overwrite/empty out existing directories/files)?" y; then
 	mkdir -p src
+	touch "src/main.ts"
 fi
 
 if check_response "📂 create \"dist\" directory (this will *not* overwrite/empty out existing directories)?" y; then
