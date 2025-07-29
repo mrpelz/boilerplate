@@ -70,17 +70,19 @@ Feel free to change them in your project to use `yarn`, `pnpm` or something else
 * (GNU!) `make`, `sed`, `tmux` and `xargs` installed  
   > This boilerplate uses `make` for task orchestration. In order to compose Makefiles from NPM-dependency artifacts, **GNU**-Make is a strict necessity.
   >
-  > In order to compose Makefiles from NPM-dependency artifacts, *GNU*-Make is a strict necessity. If you’re using macOS, install using `brew install make` and amend your `$PATH` to use GNU-Make by default (e.g. by putting
+  > If you’re using macOS, install using `brew install make` and amend your `$PATH` to use GNU-Make by default (e.g. by putting
   > ```bash
   > PATH="$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"
   > ```
-  > to your `.zshrc`).
+  > into your `.zshrc`).
 * (GNU!) `ln` installed
-  > Some config files cannot be natively extended and need to be symlinked to the boilerplate’s default. This ensures new defaults apply when the boilerplate is updated. In order to keep the project root portable across different developers’ environments, symlinks need to use relative paths, which unfortunately is only a feature in the `ln` utility from GNU-Coreutils. If you’re using macOS, install using `brew install coreutils` and amend your `$PATH` to use GNU-Coreutils by default (e.g. by putting
+  > Some config files cannot be natively extended and need to be symlinked to the boilerplate’s default. This ensures new defaults apply when the boilerplate is updated. In order to keep the project root portable across different developers’ environments, symlinks need to use relative paths, which unfortunately is only a feature in the `ln` utility from GNU-Coreutils.
+  >
+  > If you’re using macOS, install using `brew install coreutils` and amend your `$PATH` to use GNU-Coreutils by default (e.g. by putting
   > ```bash
   > PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
   > ```
-  > to your `.zshrc`).
+  > into your `.zshrc`).
 
 ### 1. Optionally Create Environment First
 
