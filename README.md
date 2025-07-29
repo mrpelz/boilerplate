@@ -47,14 +47,15 @@ Provides the configuration basis for the other boilerplate packages. Use it for 
 * run unit tests using a TypeScript- and ESM-compatible basic Jest setup
 * enforce commit message formatting using Commitlint
 * enforce package.json matching repository attributes, e.g. name, version, repository fields, key sorting
-* .editorconfig to match other tool’s settings
+* .editorconfig to match other tools’ settings
 * VSCode project-settings and -extension suggestions to match tooling
 * lint Bash-scripts using Shellcheck
 * derive package versions from git tags and automatically handle prerelease-versioning in a feature-branch workflow
 * Tmux niceties to help keep watch on all lint/check tasks during development
 * GitLab-CI pipelines
-  * to run relevant checks on every commit
-  * manually trigger (pre-)release tagging after checks complete
+  * to run relevant checks on every change pushed to a merge request
+  * manually trigger (pre-)release tagging after checks complete  
+  (no guessing breaking-changes from commit messages, press the appropriate play-button for pre-, patch-, minor- or major-release tagging after check-pipeline completes)
   * produce NPM-packages on release and publish to GitLab package-registry
   * comment prerelease-info to merge requests
 
@@ -103,11 +104,19 @@ Feel free to change them in your project to use `yarn`, `pnpm` or something else
 * `node` and `npm` installed
 * (optionally) `git` installed and set up
 * (GNU!) `make`, `sed`, `tmux` and `xargs` installed  
-  > This boilerplate uses `make` for task orchestration. In order to compose Makefiles from NPM-dependency artifacts, *GNU*-Make is a strict necessity.
+  > This boilerplate uses `make` for task orchestration. In order to compose Makefiles from NPM-dependency artifacts, **GNU**-Make is a strict necessity.
   >
-  > In order to compose Makefiles from NPM-dependency artifacts, *GNU*-Make is a strict necessity. Install using `brew install make` and amend your `$PATH` to use GNU-Make by default (e.g. by putting `PATH="$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"` in your `.zshrc`).
+  > In order to compose Makefiles from NPM-dependency artifacts, *GNU*-Make is a strict necessity. If you’re using macOS, install using `brew install make` and amend your `$PATH` to use GNU-Make by default (e.g. by putting
+  > ```bash
+  > PATH="$HOMEBREW_PREFIX/opt/make/libexec/gnubin:$PATH"
+  > ```
+  > to your `.zshrc`).
 * (GNU!) `ln` installed
-  > Some config files cannot be natively extended and need to be symlinked to the boilerplate’s default. This ensures new defaults apply when the boilerplate is updated. In order to keep the project root portable across different developers’ environments, symlinks need to use relative paths, which unfortunately is only a feature in the `ln` utility from GNU-Coreutils. Install using `brew install coreutils` and amend your `$PATH` to use GNU-Coreutils by default (e.g. by putting ` PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"` in your `.zshrc`).
+  > Some config files cannot be natively extended and need to be symlinked to the boilerplate’s default. This ensures new defaults apply when the boilerplate is updated. In order to keep the project root portable across different developers’ environments, symlinks need to use relative paths, which unfortunately is only a feature in the `ln` utility from GNU-Coreutils. If you’re using macOS, install using `brew install coreutils` and amend your `$PATH` to use GNU-Coreutils by default (e.g. by putting
+  > ```bash
+  > PATH="$HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin:$PATH"
+  > ```
+  > to your `.zshrc`).
 
 ### 1. Optionally Create Environment First
 
@@ -178,16 +187,19 @@ npm exec boilerplate-bootstrap y
 
 ## Scripts
 
-> **ℹ️ Opinion**  
+> **ℹ️ Opinion**
+>
 > This boilerplate uses `make` for task orchestration instead of stringing together multiple NPM scripts.  
-> Make is exactly designed for this purpose while NPM scripts are hard to compose, reuse and are just a byproduct of custom module-lifecycle hook scripts.
+> Make is exactly designed for this purpose while NPM scripts are hard to compose, reuse and are just a byproduct of custom package-lifecycle hook scripts.
 
-Calling a make target:
+### Calling a make target:
+
 ```bash
 make <target>
 ```
 
-> **ℹ️ Good to know**  
+> **ℹ️ Good to know**
+>
 > In order to get autocompletion working in ZSH, add
 > ```bash
 > zstyle ':completion:*:make:*:targets' call-command true
@@ -195,10 +207,8 @@ make <target>
 > ```
 > to your `.zshrc`.
 
-> **ℹ️ Good to know II**  
-> For the purpose of this ReadMe, “meta file” means a file that is related to the tooling itself (e.g. configuring ESLint) and is not part of the application’s source code.
-
-> **ℹ️ Good to know III**  
+> **ℹ️ Good to know III**
+>
 > The boilerplate tries to handle “monorepos”.  
 > For the purpose of this ReadMe, “root package” is the package that contains NPM workspace definitions and the packages within those workspaces are called “sub packages”.
 >
@@ -210,4 +220,184 @@ make <target>
 > make check_lint include_sub_packages=false
 > ```
 
-[TBA]
+## Check
+
+### `make check`
+
+Run all of:
+
+* `check_commit`
+* `check_package_json`
+* `check_lint`
+* `check_config`
+* `check_typescript`
+* `check_test`
+
+### `make check_commit`
+
+Run `commitlint` for the latest commit.
+
+### `make check_config`
+
+Run `tsc` to typecheck meta-files.
+
+> **ℹ️ Good to know II**
+>
+> For the purpose of this ReadMe, “meta-file” means a file that is related to the tooling itself (e.g. configuring ESLint) and is not part of the application’s source code.
+
+### `make check_lint`
+
+Run `eslint` to lint both sourcecode and meta-files.
+
+### `make check_package_json`
+
+Run all of:
+
+* `util_get_package_json`
+* `check_package_json_sort`
+* `check_package_json_repository`
+* `check_package_json_name`
+* `check_package_json_version`
+
+### `make check_package_json_name`
+
+If package is linked to a Git repository and isn’t a sub-package, check if the `package.json` name matches the repository name.
+
+### `make check_package_json_repository`
+
+If package is linked to a Git repository, check if the `package.json` repository fields contain the correct type, point to the correct repository and, if the package is a sub-package, point towards the correct sub-directory within the repository.
+
+### `make check_package_json_sort`
+
+Run `sort-package-json` to check for proper key sorting in `package.json`.
+
+### `make check_package_json_version`
+
+If package is linked to a Git repository, check if the `package.json` version matches the latest release version derived from Git tags.
+
+### `make check_test`
+
+Run unit-tests using `jest`.
+
+### `make check_typescript`
+
+Run `tsc` to typecheck sourcecode.
+
+## Transform
+
+### `make transform`
+
+Run all of:
+
+* `transform_package_json`
+* `transform_lint`
+* `transform_build`
+
+### `make transform_build`
+
+Run `tsc` to build sourcecode (excluding test-files).
+
+### `make transform_lint`
+
+Run `eslint` to fix lint-errors in both sourcecode and meta-files.
+
+### `make transform_package_json`
+
+Run all of:
+
+* `transform_package_json_sort`
+* `transform_package_json_name`
+* `transform_package_json_version`
+* `transform_package_json_fix`
+
+### `make transform_package_json_fix`
+
+Run `npm pkg fix` to fix common misconfigurations in `package.json`.
+
+### `make transform_package_json_name`
+
+If not a sub-package, set Git repository name as `package.json` name.
+
+### `make transform_package_json_sort`
+
+Run `sort-package-json` to apply proper key sorting in `package.json`.
+
+### `make transform_package_json_version`
+
+Set Git repository version (from tags) as `package.json` version.
+
+### `make transform_prod`
+
+Run `util_clear` and `transform_build`.
+
+## Util
+
+### `make util_clear`
+
+Clear out `dist` directory.
+
+### `make util_edit`
+
+Open VSCode for root- and sub-packages.
+
+### `make util_get_package_json`
+
+Output `package.json` to stdout.
+
+### `make util_get_package_spec`
+
+Output root- or sub-package spec (i.e. namespace + package name + version) to stdout.
+
+### `make util_get_package_spec_inner`
+
+Output package spec (i.e. namespace + package name + version) to stdout.
+
+### `make util_get_next_prerelease_version <prerelease-tag>`
+
+Check Git tags for `<prerelease-tag>` and output appropriate sequential semver-prerelease version to stdout.
+
+### `make util_get_version`
+
+Output `package.json` version to stdout.
+
+### `make util_install_git_hooks`
+
+Run `husky` to (re)install Git-hooks.
+
+## Watch
+
+### `make watch`
+
+Use Tmux to show multi-panel view for:
+
+* `watch_lint`
+* `watch_test`
+* `watch_build`
+* `watch_config`
+
+### `make watch_build`
+
+Run `tsc` to build sourcecode (excluding test-files) with `--watch`-option.
+
+### `make watch_config`
+
+Run `tsc` to typecheck meta-files with `--watch`-option.
+
+### `make watch_dev`
+
+Use Tmux to show multi-panel view for:
+
+* `watch_lint`
+* `watch_test`
+* `watch_build`
+* `watch_config`
+
+…and provide “work-area” shell at the bottom.
+
+### `make watch_lint`
+
+Run `eslint` with `nodemon` to (re)lint both sourcecode and meta-files on file change.
+
+### `make watch_test`
+
+Run unit-tests using `jest` with `--watch`-option.
