@@ -1,5 +1,4 @@
-// @ts-ignore
-import stylisticTs from '@stylistic/eslint-plugin-ts';
+import stylisticTs from '@stylistic/eslint-plugin';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 // @ts-ignore
 import typescriptParser from '@typescript-eslint/parser';
