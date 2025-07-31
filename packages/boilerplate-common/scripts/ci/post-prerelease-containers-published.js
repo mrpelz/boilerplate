@@ -25,9 +25,18 @@ import {
     } = process.env;
     if (!projectUrl || !tagMessage || !version) return;
 
-    const containersFile = await readFile('containers.txt', {
-      encoding: 'utf8',
-    });
+    const containersFile = await (() => {
+      try {
+        return readFile('containers.txt', {
+          encoding: 'utf8',
+        });
+      } catch {
+        return undefined;
+      }
+    })();
+
+    if (!containersFile) return;
+
     const containerSpecs = containersFile.trim().split('\n');
 
     console.info({
