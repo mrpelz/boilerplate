@@ -27,7 +27,9 @@ import {
 
     const containersFile = await readFile('containers.txt', {
       encoding: 'utf8',
-    });
+    }).catch(() => undefined);
+    if (!containersFile) return;
+
     const containerSpecs = containersFile.trim().split('\n');
 
     console.info({
