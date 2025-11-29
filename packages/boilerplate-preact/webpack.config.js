@@ -5,7 +5,7 @@ import configUpstream, {
   dirSrc,
   // @ts-ignore
 } from '@mrpelz/boilerplate-dom/webpack.config.js';
-import { merge } from 'ts-deepmerge';
+import { deepmerge } from 'deepmerge-ts';
 
 // @ts-ignore
 /** @type {import('@mrpelz/boilerplate-dom/webpack.config.js').ConfigurationExtended} */
@@ -33,7 +33,7 @@ const configDownstream = {
   },
 };
 
-const config = merge(configUpstream, configDownstream);
+const config = deepmerge(configUpstream, configDownstream);
 
 const { entry } = config;
 if (entry && Array.isArray(entry)) entry[0] = path.resolve(dirSrc, 'main.tsx');

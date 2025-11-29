@@ -3,9 +3,9 @@ import {
   configMeta,
   // @ts-ignore
 } from '@mrpelz/boilerplate-dom/eslint.config.js';
+import { deepmerge } from 'deepmerge-ts';
 // @ts-ignore
 import pluginReactHooks from 'eslint-plugin-react-hooks';
-import { merge } from 'ts-deepmerge';
 
 export { configMeta };
 
@@ -33,7 +33,7 @@ const configDownstream = {
   },
 };
 
-export const config = merge(configUpstream, configDownstream);
+export const config = deepmerge(configUpstream, configDownstream);
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [configMeta, config];

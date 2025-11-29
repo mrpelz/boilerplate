@@ -1,6 +1,6 @@
 // @ts-ignore
 import configUpstream from '@mrpelz/boilerplate-dom/jest.config.js';
-import { merge } from 'ts-deepmerge';
+import { deepmerge } from 'deepmerge-ts';
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 const configDownstream = {
@@ -9,7 +9,7 @@ const configDownstream = {
   },
 };
 
-const config = merge(configUpstream, configDownstream);
+const config = deepmerge(configUpstream, configDownstream);
 
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default config;
