@@ -20,6 +20,9 @@
     "packages/boilerplate-node",
     "packages/boilerplate-preact"
   ],
+  "overrides": {
+    "serialize-javascript": "^7.0.3"
+  },
   "devDependencies": {
     "@mrpelz/boilerplate-common": "*"
   }
