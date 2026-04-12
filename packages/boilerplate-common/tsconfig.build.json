@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "noEmit": false
+    "noEmit": false,
+    "tsBuildInfoFile": "dist/tsconfig.build.tsbuildinfo",
   },
   "exclude": ["**/*.test.ts"],
   "extends": "./tsconfig.json",

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src"
   },
   "extends": "@mrpelz/boilerplate-dom/tsconfig.json",
   "include": ["src/**/*"]

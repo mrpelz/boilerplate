@@ -17,11 +17,13 @@
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
     "outDir": "dist",
+    "rootDir": "src",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "ESNext",
-    "useDefineForClassFields": true
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
+    "useDefineForClassFields": true,
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
 }

@@ -3,8 +3,9 @@
     "declaration": false,
     "declarationMap": false,
     "incremental": false,
-    "moduleResolution": "Node",
-    "module": "None"
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "."
   },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "./tsconfig.json",
