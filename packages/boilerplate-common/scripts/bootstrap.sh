@@ -79,7 +79,8 @@ EOF
 			cat <<EOF
 {
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src"
   },
   "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.json",
   "include": ["src/**/*"]
@@ -103,6 +104,9 @@ EOF
 		make_config tsconfig.meta.json "$(
 			cat <<EOF
 {
+  "compilerOptions": {
+    "rootDir": "."
+  },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.meta.json",
   "include": ["**/*.js", "**/*.mjs"]
