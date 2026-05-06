@@ -3,7 +3,8 @@
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "extends": "@mrpelz/boilerplate-dom/tsconfig.json",
   "include": ["src/**/*"]

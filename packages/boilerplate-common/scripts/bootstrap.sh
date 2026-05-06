@@ -80,7 +80,8 @@ EOF
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.json",
   "include": ["src/**/*"]
@@ -105,7 +106,8 @@ EOF
 			cat <<EOF
 {
   "compilerOptions": {
-    "rootDir": "."
+    "rootDir": ".",
+    "tsBuildInfoFile": "dist/tsconfig.meta.tsbuildinfo"
   },
   "exclude": ["dist/**/*", "node_modules/**/*", "packages/**/*", "src/**/*"],
   "extends": "$BOILERPLATE_MODULE_NAME/tsconfig.meta.json",
