@@ -1,6 +1,6 @@
 {
   "name": "@mrpelz/boilerplate-node",
-  "version": "15.2.0",
+  "version": "15.2.1-feat-deps-upgrade-and-corepack.0",
   "repository": {
     "type": "git",
     "url": "https://git.i.wurstsalat.cloud/mrpelz/boilerplate.git",
