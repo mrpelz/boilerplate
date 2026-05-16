@@ -10,6 +10,7 @@
 	check_package_json_repository \
 	check_package_json_sort \
 	check_package_json_version \
+	check_package_lock \
 	check_test \
 	check_typescript \
 	transform \
@@ -41,6 +42,8 @@ SHELL := /usr/bin/env bash
 ARGS := $(filter-out $(firstword $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
 export PATH := $(shell npm root)/.bin:$(PATH)
+
+PACKAGE_LOCK_LINT_ARGS := --empty-hostname false --validate-https --validate-integrity --allowed-hosts npm
 
 SUB_PACKAGE_DIR := packages
 
@@ -88,6 +91,7 @@ ESLINT_ARGS := --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*"
 check: \
 	check_commit \
 	check_package_json \
+	check_package_lock \
 	check_lint \
 	check_config \
 	check_typescript \
@@ -175,6 +179,9 @@ check_package_json_version:
 		echo "version in package.json ($(PKG_VERSION)) does not match git repository version ($(GIT_VERSION))"; \
 		exit 1; \
 	fi;
+
+check_package_lock:
+	lockfile-lint --path package-lock.json --type npm $(PACKAGE_LOCK_LINT_ARGS)
 
 check_test:
 	$(SUB_RUN)

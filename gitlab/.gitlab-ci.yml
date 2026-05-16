@@ -54,6 +54,15 @@ check_package_json:
   script:
     - make -s check_package_json
 
+check_package_lock:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_TAG
+  script:
+    - make -s check_package_lock
+
 check_lint:
   stage: check
   rules:
