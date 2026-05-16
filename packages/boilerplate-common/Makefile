@@ -43,8 +43,6 @@ ARGS := $(filter-out $(firstword $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
 export PATH := $(shell npm root)/.bin:$(PATH)
 
-PACKAGE_LOCK_LINT_ARGS := --empty-hostname false --validate-https --validate-integrity --allowed-hosts npm
-
 SUB_PACKAGE_DIR := packages
 
 SUB_RUN = \
@@ -83,6 +81,7 @@ PKG_REPO_TYPE := $(shell npm pkg get --workspaces=false repository.type 2>/dev/n
 PKG_REPO_NAME := $(shell npm pkg get --workspaces=false repository.url 2>/dev/null | sed -nr 's/^"(.+)"$$/\1/p' 2>/dev/null | sed -nr 's/^(https|git)(:\/\/|@)(.+@)?([^\/:]+)[\/:]([^\/:]+)\/(.+)\.git$$/\5\/\6/p' 2>/dev/null)
 PKG_REPO_DIRECTORY := $(shell npm pkg get --workspaces=false repository.directory 2>/dev/null | sed -nr 's/^"(.+)"$$/\1/p' 2>/dev/null)
 
+PACKAGE_LOCK_LINT_ARGS := --empty-hostname false --validate-https --allowed-hosts npm
 ESLINT_ARGS := --ignore-pattern "dist/**/*" --ignore-pattern "node_modules/**/*" --ignore-pattern "$(SUB_PACKAGE_DIR)/**/*"
 
 %:
