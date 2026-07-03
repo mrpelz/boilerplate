@@ -436,12 +436,18 @@ export const rules = {
   'template-curly-spacing': ['error', 'never'],
   'template-tag-spacing': 'error',
   'unicode-bom': ['error', 'never'],
+  'unicorn/consistent-boolean-name': 'off',
+  'unicorn/name-replacements': 'off',
+  'unicorn/no-exports-in-scripts': 'off',
   'unicorn/no-null': 'off',
   'unicorn/no-useless-undefined': 'off',
   'unicorn/number-literal-case': 'off',
+  'unicorn/prefer-await': 'off',
   'unicorn/prefer-native-coercion-functions': 'off',
+  'unicorn/prefer-number-coercion': 'off',
   'unicorn/prefer-regexp-test': 'off',
   'unicorn/prefer-set-has': 'off',
+  'unicorn/prefer-split-limit': 'off',
   'unicorn/prefer-spread': 'off',
   'unicorn/prefer-top-level-await': 'off',
   'unicorn/prevent-abbreviations': 'off',
@@ -454,6 +460,7 @@ export const rules = {
 
 /** @type {Record<string, import('eslint').ESLint.Plugin>} */
 export const plugins = {
+  // @ts-ignore
   '@stylistic/ts': stylisticTs,
   // @ts-ignore
   '@typescript-eslint': typescriptPlugin,

@@ -21,7 +21,9 @@
     "packages/boilerplate-preact"
   ],
   "overrides": {
-    "serialize-javascript": "^7.0.3"
+    "serialize-javascript": "^7.0.3",
+    "uuid": "^13.0.1",
+    "webpack-dev-server": "^6.0.0"
   },
   "devDependencies": {
     "@mrpelz/boilerplate-common": "*"
