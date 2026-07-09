@@ -161,7 +161,7 @@ util_get_package_spec:
 tag:prerelease:
   stage: release
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /prerelease/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /release_pre/
       when: on_success
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
@@ -288,11 +288,11 @@ post prerelease packages published:
 post prerelease remove prerelease-label:
   stage: post
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /prerelease/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /release_pre/
       when: on_success
   script:
     - |
       curl --request PUT \
         --header "private-token: ${CI_BOT_TOKEN}" \
-        --data-urlencode "remove_labels=prerelease" \
+        --data-urlencode "remove_labels=release_pre" \
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}"
