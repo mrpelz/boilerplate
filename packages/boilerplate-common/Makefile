@@ -1,41 +1,6 @@
-.SILENT:
+MAKEFLAGS += --always-make
 
-.PHONY: \
-	check \
-	check_commit \
-	check_config \
-	check_lint \
-	check_package_json \
-	check_package_json_name \
-	check_package_json_repository \
-	check_package_json_sort \
-	check_package_json_version \
-	check_package_lock \
-	check_test \
-	check_typescript \
-	transform \
-	transform_build \
-	transform_lint \
-	transform_package_json \
-	transform_package_json_fix \
-	transform_package_json_name \
-	transform_package_json_sort \
-	transform_package_json_version \
-	transform_prod \
-	util_clear \
-	util_edit \
-	util_get_package_json \
-	util_get_package_spec \
-	util_get_package_spec_inner \
-	util_get_next_prerelease_version \
-	util_get_version \
-	util_install_git_hooks \
-	watch \
-	watch_build \
-	watch_config \
-	watch_dev \
-	watch_lint \
-	watch_test
+.SILENT:
 
 SHELL := /usr/bin/env bash
 
@@ -288,6 +253,12 @@ util_get_version:
 
 util_install_git_hooks:
 	husky
+
+util_update_major:
+	$(SUB_RUN)
+
+	PACKAGE_SPECS=$$(npm outdated --parseable | cat | cut -d ":" -f 4 | sed ':a; N; $!ba; s/\n/ /g'); \
+	npm install $${PACKAGE_SPECS} --audit=false --fund=false --save --save-exact;
 
 watch:
 	scripts/watch.sh
