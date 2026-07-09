@@ -159,8 +159,12 @@ util_get_package_spec:
 tag:prerelease:
   stage: release
   rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /prerelease/
+      when: on_success
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_RELEASE_TAG == "pre"
+      when: on_success
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   allow_failure: true
@@ -179,6 +183,8 @@ tag:prerelease:
 tag:patch:
   stage: release
   rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_RELEASE_TAG == "patch"
+      when: on_success
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   allow_failure: true
@@ -194,6 +200,8 @@ tag:patch:
 tag:minor:
   stage: release
   rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_RELEASE_TAG == "minor"
+      when: on_success
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   allow_failure: true
@@ -209,6 +217,8 @@ tag:minor:
 tag:major:
   stage: release
   rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_RELEASE_TAG == "major"
+      when: on_success
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: manual
   allow_failure: true
@@ -272,3 +282,15 @@ post prerelease packages published:
       when: on_success
   script:
     - npm exec boilerplate-ci-post-prerelease-packages-published
+
+post prerelease remove prerelease-label:
+  stage: post
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /prerelease/
+      when: on_success
+  script:
+    - |
+      curl --request PUT \
+        --header "private-token: ${CI_BOT_TOKEN}" \
+        --data-urlencode "remove_labels=prerelease" \
+        "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}"

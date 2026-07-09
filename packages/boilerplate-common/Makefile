@@ -30,6 +30,14 @@
 	util_get_next_prerelease_version \
 	util_get_version \
 	util_install_git_hooks \
+	util_push_release_pre \
+	util_push_force_release_pre \
+	util_push_release_patch \
+	util_push_force_release_patch \
+	util_push_release_minor \
+	util_push_force_release_minor \
+	util_push_release_major \
+	util_push_force_release_major \
 	util_update_major \
 	watch \
 	watch_build \
@@ -289,6 +297,30 @@ util_get_version:
 
 util_install_git_hooks:
 	husky
+
+util_push_release_pre:
+	git push -u origin HEAD -o ci.variable="CI_RELEASE_TAG=pre" -o merge_request.label="release_pre"
+
+util_push_force_release_pre:
+	git push -u origin HEAD --force -o ci.variable="CI_RELEASE_TAG=pre" -o merge_request.label="release_pre"
+
+util_push_release_patch:
+	git push -u origin HEAD -o ci.variable="CI_RELEASE_TAG=patch"
+
+util_push_force_release_patch:
+	git push -u origin HEAD --force -o ci.variable="CI_RELEASE_TAG=patch"
+
+util_push_release_minor:
+	git push -u origin HEAD -o ci.variable="CI_RELEASE_TAG=minor"
+
+util_push_force_release_minor:
+	git push -u origin HEAD --force -o ci.variable="CI_RELEASE_TAG=minor"
+
+util_push_release_major:
+	git push -u origin HEAD -o ci.variable="CI_RELEASE_TAG=major"
+
+util_push_force_release_major:
+	git push -u origin HEAD --force -o ci.variable="CI_RELEASE_TAG=major"
 
 util_update_major:
 	$(SUB_RUN)
