@@ -27,26 +27,6 @@ npm install:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm ci --audit=false --fund=false
 
-npm audit:
-  stage: prepare
-  needs: ["npm install"]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  allow_failure: true
-  script:
-    - npm audit
-
-npm outdated:
-  stage: prepare
-  needs: ["npm install"]
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  allow_failure: true
-  script:
-    - npm outdated
-
 post prerelease pipeline:
   stage: prepare
   needs: ["npm install"]
@@ -57,6 +37,24 @@ post prerelease pipeline:
       when: on_success
   script:
     - npm exec boilerplate-ci-post-prerelease-pipeline
+
+npm audit:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - npm audit
+
+npm outdated:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - npm outdated
 
 check_commit:
   stage: check
@@ -289,7 +287,7 @@ post prerelease remove prerelease-label:
   stage: post
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /release_pre/
-      when: on_success
+      when: always
   script:
     - |
       curl --request PUT \
