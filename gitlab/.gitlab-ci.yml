@@ -29,6 +29,7 @@ npm install:
 
 npm audit:
   stage: prepare
+  needs: ["npm install"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -38,6 +39,7 @@ npm audit:
 
 npm outdated:
   stage: prepare
+  needs: ["npm install"]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
