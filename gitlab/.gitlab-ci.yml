@@ -27,6 +27,24 @@ npm install:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm ci --audit=false --fund=false
 
+npm audit:
+  stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - npm audit
+
+npm outdated:
+  stage: prepare
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - npm outdated
+
 post prerelease pipeline:
   stage: prepare
   needs: ["npm install"]

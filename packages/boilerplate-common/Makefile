@@ -23,16 +23,16 @@ SUB_RUN = \
 		exit 0; \
 	fi; \
 	\
-	echo; \
+	echo >&2; \
 	\
 	for SUB_PACKAGE in $(SUB_PACKAGE_DIR)/*; do \
-		echo "$$SUB_PACKAGE:$(@)"; \
+		echo "$$SUB_PACKAGE:$(@)" >&2; \
 		\
 		$(MAKE) -s -C "$$SUB_PACKAGE" sub_package="$$SUB_PACKAGE" "$(@)" || exit "$$?"; \
-		echo; \
+		echo >&2; \
 	done; \
 	\
-	echo "parent:$(@)";
+	echo "parent:$(@)" >&2;
 
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 

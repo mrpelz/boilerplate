@@ -14,6 +14,10 @@ npm install:
     - for NPM_CONFIG in $NPM_INSTALL_ADDITIONAL_CONFIG; do npm config set "${NPM_CONFIG}"; done
     - npm ci --workspaces --include-workspace-root --audit=false --fund=false
 
+npm audit:
+  script:
+    - npm audit --workspaces --include-workspace-root
+
 tag:prerelease:
   script:
     - git config user.email "${CI_BOT_EMAIL}"
