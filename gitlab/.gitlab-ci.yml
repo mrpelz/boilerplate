@@ -159,7 +159,7 @@ util_get_package_spec:
 tag:prerelease:
   stage: release
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /release_pre/
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_LABELS =~ /keep_released_pre|release_pre/
       when: on_success
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
