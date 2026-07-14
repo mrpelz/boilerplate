@@ -38,24 +38,6 @@ post prerelease pipeline:
   script:
     - npm exec boilerplate-ci-post-prerelease-pipeline
 
-npm audit:
-  stage: check
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  allow_failure: true
-  script:
-    - npm audit
-
-npm outdated:
-  stage: check
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  allow_failure: true
-  script:
-    - npm outdated
-
 check_commit:
   stage: check
   rules:
@@ -63,6 +45,24 @@ check_commit:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
     - make -s check_commit
+
+check_npm_audit:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - make -s check_npm_audit
+
+check_npm_outdated:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  allow_failure: true
+  script:
+    - make -s check_npm_outdated
 
 check_package_json:
   stage: check

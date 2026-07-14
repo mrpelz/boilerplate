@@ -439,6 +439,7 @@ export const rules = {
   'unicorn/class-reference-in-static-methods': 'off',
   'unicorn/consistent-boolean-name': 'off',
   'unicorn/consistent-class-member-order': 'off',
+  'unicorn/logical-assignment-operators': 'off',
   'unicorn/max-nested-calls': 'off',
   'unicorn/name-replacements': 'off',
   'unicorn/no-break-in-nested-loop': 'off',

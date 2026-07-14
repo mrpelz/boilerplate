@@ -10,6 +10,10 @@
 	check_package_json_repository \
 	check_package_json_sort \
 	check_package_json_version \
+	check_npm_audit \
+	check_npm_audit_0 \
+	check_npm_outdated \
+	check_npm_outdated_0 \
 	check_package_lock \
 	check_test \
 	check_typescript \
@@ -38,7 +42,6 @@
 	util_push_force_release_minor \
 	util_push_release_major \
 	util_push_force_release_major \
-	util_update_major \
 	watch \
 	watch_build \
 	watch_config \
@@ -103,7 +106,9 @@ check: \
 	check_lint \
 	check_config \
 	check_typescript \
-	check_test
+	check_test \
+	check_npm_audit_0 \
+	check_npm_outdated_0
 
 check_commit:
 	commitlint --verbose --config commitlint.config.mjs --from HEAD~1 --to HEAD
@@ -187,6 +192,24 @@ check_package_json_version:
 		echo "version in package.json ($(PKG_VERSION)) does not match git repository version ($(GIT_VERSION))"; \
 		exit 1; \
 	fi;
+
+check_npm_audit:
+	$(SUB_RUN)
+
+	npm audit
+
+check_npm_audit_0:
+	$(SUB_RUN)
+
+	npm audit; \
+	exit 0;
+
+check_npm_outdated:
+	npm outdated
+
+check_npm_outdated_0:
+	npm outdated; \
+	exit 0;
 
 check_package_lock:
 	lockfile-lint --path package-lock.json --type npm $(PACKAGE_LOCK_LINT_ARGS)
@@ -321,14 +344,6 @@ util_push_release_major:
 
 util_push_force_release_major:
 	git push -u origin HEAD --force -o ci.variable="CI_RELEASE_TAG=major"
-
-util_update_major:
-	$(SUB_RUN)
-
-	PACKAGE_SPECS=$$(npm outdated --parseable | cut -d ":" -f 4 | uniq | sed ':a; N; $!ba; s/\n/ /g'); \
-	echo "$${PACKAGE_SPECS}"; \
-	echo; \
-	npm install $${PACKAGE_SPECS} --audit=false --fund=false --save --save-exact;
 
 watch:
 	scripts/watch.sh
