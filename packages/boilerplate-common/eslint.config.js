@@ -475,6 +475,7 @@ export const rules = {
   'unicorn/prefer-queue-microtask': 'off',
   'unicorn/prefer-regexp-test': 'off',
   'unicorn/prefer-set-has': 'off',
+  'unicorn/prefer-simple-condition-first': 'off',
   'unicorn/prefer-single-replace': 'off',
   'unicorn/prefer-split-limit': 'off',
   'unicorn/prefer-spread': 'off',
