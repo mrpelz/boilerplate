@@ -482,6 +482,8 @@ export const rules = {
   'unicorn/prefer-unicode-code-point-escapes': 'off',
   'unicorn/prevent-abbreviations': 'off',
   'unicorn/require-array-sort-compare': 'off',
+  'unicorn/single-line-block-comment-style': 'off',
+  'unicorn/single-line-comment-style': 'off',
   'use-isnan': 'error',
   'vars-on-top': 'error',
   'wrap-regex': 'error',
