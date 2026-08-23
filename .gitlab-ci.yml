@@ -17,4 +17,4 @@ publish:npm:npmjs:
   script:
     - npm config set "//registry.npmjs.org/:_authToken=${BOILERPLATE_PUBLISH_NPM_TOKEN}"
     - npm pkg set --workspaces "repository.url=${BOILERPLATE_PUBLISH_NPM_GIT_URL}"
-    - npm publish --workspaces --access public --tag "${VERSION_TAG}"
+    - npm stage publish --workspaces --access public --tag "${VERSION_TAG}"
