@@ -21,9 +21,13 @@
     "packages/boilerplate-preact"
   ],
   "overrides": {
-    "serialize-javascript": "7.0.3",
-    "uuid": "13.0.1",
-    "webpack-dev-server": "6.0.0"
+    "@istanbuljs/load-nyc-config": {
+      "js-yaml": "5.4.3"
+    },
+    "eslint": "10.12.0",
+    "serialize-javascript": "7.1.2",
+    "stylelint": "17.16.0",
+    "stylelint-order": "8.1.2"
   },
   "devDependencies": {
     "@mrpelz/boilerplate-common": "*"
