@@ -31,11 +31,11 @@
     "@istanbuljs/load-nyc-config": {
       "js-yaml": "5.4.3"
     },
-    "eslint": "10.12.0"
+    "eslint": "10.15.0"
   },
   "dependencies": {
     "@mrpelz/boilerplate-common": "*",
-    "@types/node": "26.6.5"
+    "@types/node": "26.6.6"
   },
   "packageManager": "npm@11.14.1+sha512.6a8a4d67478497a2dbc6815cad72e64c43f33413717e242756047d466241ab39bee61e691683a64658e94496ec5f1a1c05e4a5ec62dcc773280dfd949443a367",
   "devEngines": {
