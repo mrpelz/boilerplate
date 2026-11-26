@@ -86,10 +86,10 @@ check_lint:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
-        - "**/*.{js,ts}"
+        - "**/*.{js,ts,tsx}"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - "**/*.{js,ts}"
+        - "**/*.{js,ts,tsx}"
   script:
     - make -s check_lint
 
@@ -112,13 +112,13 @@ check_typescript:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
-        - "src/**/*.{js,ts}"
-        - "packages/*/src/**/*.{js,ts}"
+        - "src/**/*.{js,ts,tsx}"
+        - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - "src/**/*.{js,ts}"
-        - "packages/*/src/**/*.{js,ts}"
+        - "src/**/*.{js,ts,tsx}"
+        - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
   script:
     - make -s check_typescript
@@ -128,13 +128,13 @@ check_test:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       changes:
-        - "src/**/*.{js,ts}"
-        - "packages/*/src/**/*.{js,ts}"
+        - "src/**/*.{js,ts,tsx}"
+        - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
-        - "src/**/*.{js,ts}"
-        - "packages/*/src/**/*.{js,ts}"
+        - "src/**/*.{js,ts,tsx}"
+        - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
   script:
     - make -s check_test
