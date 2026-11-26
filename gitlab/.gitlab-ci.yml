@@ -100,10 +100,14 @@ check_config:
       changes:
         - "**/*.js"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "**/*.js"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
   script:
     - make -s check_config
 
@@ -115,11 +119,15 @@ check_typescript:
         - "src/**/*.{js,ts,tsx}"
         - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts,tsx}"
         - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
   script:
     - make -s check_typescript
 
@@ -131,11 +139,15 @@ check_test:
         - "src/**/*.{js,ts,tsx}"
         - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       changes:
         - "src/**/*.{js,ts,tsx}"
         - "packages/*/src/**/*.{js,ts,tsx}"
         - "**/tsconfig*.json"
+        - "package-lock.json"
+        - "npm-shrinkwrap.json"
   script:
     - make -s check_test
 
